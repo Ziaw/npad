@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using ICSharpCode.TextEditor.Document;
 using NPad.Core;
 using NPad.Properties;
+using System.Reflection;
 
 namespace NPad
 {
@@ -21,8 +22,14 @@ namespace NPad
         {
             InitializeComponent();
 
+            initCompiler();
             initEditor();
             initFileBrowser();
+        }
+
+        private void initCompiler()
+        {
+            compiler.SetNemerlePath(Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Nemerle"));
         }
 
         private void initEditor()
@@ -101,7 +108,7 @@ namespace NPad
             if (fileName == null)
             {
                 fileName = Path.GetTempFileName();
-                final = () => File.Delete(fileName);
+                //final = () => File.Delete(fileName); commented by no release file nemerle compiler due to exception
             }
 
             using (var log = new StringWriter())
@@ -115,15 +122,45 @@ namespace NPad
                     {
                         outputBox.Text = log.ToString();
                     }
-                    result.
+                    else
+                    {
+                        var entryPoint = result.GetTypes()
+                            .Select(t => t.GetMethod("Main", BindingFlags.Static | BindingFlags.Public))
+                            .SingleOrDefault(m => m != null);
+
+                        if (entryPoint == null)
+                            throw new InvalidOperationException("public static Main() : void not found");
+
+                        RunProgram(entryPoint);
+                    }
                 }
                 catch (Exception e)
                 {
-                    outputBox.Text = log.ToString();
+                    outputBox.Text = 
+                        e.Message + "\n" +
+                        log.ToString();
                 }
                 finally
                 {
                     final();
+                }
+            }
+        }
+
+        private void RunProgram(MethodInfo entryPoint)
+        {
+            using (var output = new StringWriter())
+            {
+                var oldOutput = Console.Out;
+                try
+                {
+                    Console.SetOut(output);
+                    entryPoint.Invoke(null, new object[0]);
+                    outputBox.Text = output.ToString();
+                }
+                finally
+                {
+                    Console.SetOut(output);
                 }
             }
         }

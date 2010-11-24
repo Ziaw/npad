@@ -16,6 +16,8 @@ namespace NPad.Core
   /// </summary>
   public class ManagedCompiler: ICompiler
   {
+      mutable nemerlePath : string;
+      
       public Compile(fileName : FileInfo, log : TextWriter) : Assembly
       {
           def options = CompilationOptions();
@@ -23,12 +25,27 @@ namespace NPad.Core
           
           manager.InitOutput(log);
           
-          options.Sources = [fileName.FullName];
-          options.CompileToMemory = true;
-          
-          manager.Run();
-          
-          manager.GeneratedAssembly
+          try
+          {
+              when (!String.IsNullOrEmpty(nemerlePath))
+                options.LibraryPaths ::= nemerlePath;
+              
+              options.Sources = [fileName.FullName];
+              options.CompileToMemory = true;
+              
+              manager.Run();
+              manager.GeneratedAssembly
+          }
+          finally
+          {
+              // how to close compiled file?
+          }
       }
+      
+      public SetNemerlePath(path : string) : void
+      {
+      	nemerlePath = path;
+      }
+      
   }
 }

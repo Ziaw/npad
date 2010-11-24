@@ -15,6 +15,7 @@ namespace NPad.Core
   /// </summary>
   public interface ICompiler
   {
+      SetNemerlePath(path : string) : void;
       Compile(fileName : FileInfo, log : TextWriter) : Assembly;
   }
 }

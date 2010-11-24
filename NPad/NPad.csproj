@@ -79,7 +79,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Resources\FormRun.bmp" />
-    <Content Include="Samples\test.n">
+    <Content Include="Samples\HelloWorld.n">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Properties\Settings.Designer.cs">
