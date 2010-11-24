@@ -20,26 +20,34 @@ namespace NPad
       
       public Compile(fileName : FileInfo, log : TextWriter) : Assembly
       {
-          def options = CompilationOptions();
-          def manager = ManagerClass(options);
+        def options = CompilationOptions();
+        def manager = ManagerClass(options);
+        
+        manager.InitOutput(System.IO.TextWriter.Null);
+        manager.MessageOccured += (_, msg) => log.WriteLine(msg);
+        
+        try
+        {
+          when (!String.IsNullOrEmpty(nemerlePath))
+            options.LibraryPaths ::= nemerlePath;
           
-          manager.InitOutput(log);
+          options.IgnoreConfusion = true;
+          options.ProgressBar = false;
+          options.Sources = [fileName.FullName];
+          options.CompileToMemory = true;
+          options.ColorMessages = false;
           
-          try
-          {
-              when (!String.IsNullOrEmpty(nemerlePath))
-                options.LibraryPaths ::= nemerlePath;
-              
-              options.Sources = [fileName.FullName];
-              options.CompileToMemory = true;
-              
-              manager.Run();
-              manager.GeneratedAssembly
-          }
-          finally
-          {
-              // how to close compiled file?
-          }
+          manager.Run();
+          manager.GeneratedAssembly
+        }
+        catch
+        {
+          | _ is Recovery => null
+        }
+        finally
+        {
+            // how to close compiled file?
+        }
       }
       
       public SetNemerlePath(path : string) : void

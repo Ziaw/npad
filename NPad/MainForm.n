@@ -56,7 +56,7 @@ namespace NPad
     private initEditor() : void
     {
         codeEditor.Document.HighlightingStrategy = GetHighlightingStrategy();
-        codeEditor.Document.DocumentChanged += (sender, args) =>
+        codeEditor.Document.DocumentChanged += (_, _) =>
         {
             isDirty = true;
             updateTitle();
@@ -81,7 +81,7 @@ namespace NPad
         collectionNode.Expand();
     }
   
-    private fileBrowser_NodeMouseClick (sender : object,  e : System.Windows.Forms.TreeNodeMouseClickEventArgs) : void
+    private fileBrowser_NodeMouseClick (_ : object,  e : System.Windows.Forms.TreeNodeMouseClickEventArgs) : void
     {
       match (e.Node.Tag :> string)
       {
@@ -120,7 +120,7 @@ namespace NPad
       HighlightingStrategyFactory.CreateHighlightingStrategy("C#");
     }
     
-    private runToolStripMenuItem_Click (sender : object,  e : System.EventArgs) : void
+    private runToolStripMenuItem_Click (_ : object,  _ : System.EventArgs) : void
     {
       runCode();
     }
@@ -162,7 +162,7 @@ namespace NPad
         {
           | e =>
             outputTextBox.Text = 
-                e.ToString() + "\n" +
+                e.Message + "\n" +
                 log.ToString();
         }
         finally
@@ -185,6 +185,7 @@ namespace NPad
           {
             | 0 => array(0)
             | 1 => array[array(0) : array[string]]
+            | i => throw ArgumentException($"Invalid Main args count $i");
           }
           _ = entryPoint.Invoke(null, parms);
           outputTextBox.Text = output.ToString();
