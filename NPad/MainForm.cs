@@ -29,7 +29,19 @@ namespace NPad
 
         private void initCompiler()
         {
-            compiler.SetNemerlePath(Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Nemerle"));
+            var nemerlePath = Environment.ExpandEnvironmentVariables(@"%Nemerle%");
+            
+            if (!Directory.Exists(nemerlePath))
+                nemerlePath = Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Nemerle");
+            
+            if (!File.Exists(Path.Combine(nemerlePath, "ncc.exe")))
+            {
+                MessageBox.Show(
+                    "Nemerle not found. Set Nemerle environment variable or install nemerle into Program Files\\Nemerle");
+                return;
+            }
+
+            compiler.SetNemerlePath(nemerlePath);
         }
 
         private void initEditor()
