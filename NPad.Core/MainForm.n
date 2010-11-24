@@ -1,0 +1,199 @@
+﻿using Nemerle.Collections;
+using Nemerle.Text;
+using Nemerle.Utility;
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.IO;
+using System.Windows.Forms;
+
+using ICSharpCode.TextEditor.Document;
+using System.Reflection;
+
+namespace NPad.Core
+{
+  /// <summary>
+  /// Description of MainForm.
+  /// </summary>
+  public partial class MainForm : Form
+  {
+    compiler = ManagedCompiler() : ICompiler ;
+  
+    public this()
+    {
+      InitializeComponent();
+
+      initCompiler();
+      initEditor();
+      initFileBrowser();
+    }
+
+    initCompiler() : void 
+    {
+        def searchPaths = [@"%Nemerle%", @"%ProgramFiles%\Nemerle"];
+        
+        def isCorrectPath(path)
+        {
+            Directory.Exists(path) && File.Exists(Path.Combine(path, "ncc.exe"))
+        }
+        
+        def nemerlePath = searchPaths
+          .Map(Environment.ExpandEnvironmentVariables)
+          .FirstOrDefault(isCorrectPath);
+        
+        if (String.IsNullOrEmpty(nemerlePath))
+          _ = MessageBox.Show(
+                "Nemerle not found. Set Nemerle environment variable or install nemerle into Program Files\\Nemerle");
+        else
+          compiler.SetNemerlePath(nemerlePath);
+    }
+    
+    private initEditor() : void
+    {
+        codeEditor.Document.HighlightingStrategy = GetHighlightingStrategy();
+        codeEditor.Document.DocumentChanged += (sender, args) =>
+        {
+            isDirty = true;
+            updateTitle();
+        };
+    }
+
+    private initFileBrowser() : void
+    {
+        def snippetsCollection = SnippetCollection("Samples", "Samples");
+
+        fileBrowser.Nodes.Clear();
+        def collectionNode = fileBrowser.Nodes.Add(snippetsCollection.Title);
+        def baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+        snippetsCollection.ForEachFile(baseDirectory, file =>
+        {
+            def node = collectionNode.Nodes.Add(Path.GetFileNameWithoutExtension(file));
+            node.ToolTipText = file;
+            node.Tag = file;
+        });
+
+        collectionNode.Expand();
+    }
+  
+    private fileBrowser_NodeMouseClick (sender : object,  e : System.Windows.Forms.TreeNodeMouseClickEventArgs) : void
+    {
+      match (e.Node.Tag :> string)
+      {
+        | null => ()
+        | fileName => loadFile(fileName);
+      }
+    }
+    
+    loadFile(fileName : string) : void 
+    {
+        codeEditor.LoadFile(fileName);
+        codeEditor.Document.HighlightingStrategy = GetHighlightingStrategy();
+        currentFileName = fileName;
+        isDirty = false;
+        updateTitle();
+    }
+
+    isDirty : bool { get; set; }
+    currentFileName : string { get; set; }
+
+    updateTitle() : void 
+    {
+      def dirty = if (isDirty) "*" else "";
+      
+      def (fileName, separator) = match (currentFileName)
+      {
+          | null => ("", "")
+          | path => (Path.GetFileName(path), " - ")
+      }
+      
+      Text = $"$(dirty)$(fileName)$(separator)Nemerle Pad";
+    }
+    
+    GetHighlightingStrategy() : IHighlightingStrategy 
+    {
+      HighlightingStrategyFactory.CreateHighlightingStrategy("C#");
+    }
+    
+    private runToolStripMenuItem_Click (sender : object,  e : System.EventArgs) : void
+    {
+      runCode();
+    }
+    
+    runCode() : void
+    {
+      mutable final = () => { };
+      
+      def fileName = match (currentFileName)
+      {
+        | null => 
+          //final = () => File.Delete(fileName); commented by no release file nemerle compiler due to exception
+          Path.GetTempFileName();
+        | some => some
+      }
+      
+      using (log = StringWriter())
+      {
+        try
+        {
+            codeEditor.SaveFile(fileName);
+
+            match (compiler.Compile(FileInfo(fileName), log))
+            {
+              | null =>
+                outputTextBox.Text = log.ToString();
+              | assembly =>
+                def entryPoint = assembly.GetTypes()
+                    .Select(t => t.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                    .SingleOrDefault(m => m != null);
+
+                when (entryPoint == null)
+                    throw InvalidOperationException("static Main() : void not found");
+                
+                runProgram(entryPoint);
+            }
+        }
+        catch
+        {
+          | e =>
+            outputTextBox.Text = 
+                e.ToString() + "\n" +
+                log.ToString();
+        }
+        finally
+        {
+            final();
+        }
+      }
+    }
+
+    private runProgram(entryPoint : MethodInfo) : void
+    {
+      using (output = StringWriter())
+      {
+        def oldOutput = Console.Out;
+        try
+        {
+          Console.SetOut(output);
+          
+          def parms = match (entryPoint.GetParameters().Length)
+          {
+            | 0 => array(0)
+            | 1 => array[array(0) : array[string]]
+          }
+          _ = entryPoint.Invoke(null, parms);
+          outputTextBox.Text = output.ToString();
+        }
+        finally
+        {
+          Console.SetOut(oldOutput);
+        }
+      }
+    }
+  }
+}

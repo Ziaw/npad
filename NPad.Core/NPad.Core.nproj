@@ -4,6 +4,7 @@
     <NoStdLib>true</NoStdLib>
     <Nemerle Condition=" '$(Nemerle)' == '' ">$(ProgramFiles)\Nemerle</Nemerle>
     <Name>NPad.Core</Name>
+    <TargetPlatform>v2</TargetPlatform>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,7 +12,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8a69ad43-20c5-45bb-8325-f0c623a74b29}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NPad.Core</RootNamespace>
     <AssemblyName>NPad.Core</AssemblyName>
@@ -36,6 +37,12 @@
     <DocumentationFile>bin\Release\NPad.Core.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.TextEditor, Version=3.0.0.3437, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a">
+      <Name>ICSharpCode.TextEditor</Name>
+      <AssemblyName>ICSharpCode.TextEditor.dll</AssemblyName>
+      <HintPath>..\lib\ICSharpCode.TextEditor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="Nemerle.Compiler">
       <Name>Nemerle.Compiler</Name>
@@ -47,10 +54,19 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+      <AssemblyName>
+      </AssemblyName>
+      <HintPath>C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Drawing.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+      <AssemblyName>
+      </AssemblyName>
+      <HintPath>C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
@@ -65,17 +81,36 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="Samples\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainForm.Designer.n">
+      <SubType>Code</SubType>
+      <DependentUpon>MainForm.n</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.n">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ManagedCompiler.n">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ICompiler.n">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Program.n">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="Samples\HelloWorld.n">
+      <SubType>Code</SubType>
+    </Content>
     <Compile Include="SnippetCollection.n">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.n</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(Nemerle)\Nemerle.MSBuild.targets" />
   <!--

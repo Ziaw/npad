@@ -7,18 +7,19 @@ using Nemerle.Collections;
 
 namespace NPad.Core
 {
-    public class SnippetCollection
-    {
-        fileMask = "*.n";
-        
-        public Title : string { get; set; }
-        public Path : string { get; set; }
-        
-        public ForEachFile(path : string, action : Action[string]) : void 
-        {
-            def files = Directory.GetFiles(Path.Combine(path, Path), fileMask);
-            
-            files.Iter(action(_));
-        }
-    }
+  [Record(Exclude = [fileMask])]
+  public class SnippetCollection
+  {
+      fileMask = "*.n";
+      
+      public Title : string { get; set; }
+      public Path : string { get; set; }
+      
+      public ForEachFile(path : string, action : Action[string]) : void 
+      {
+          def files = Directory.GetFiles(Path.Combine(path, Path), fileMask);
+          
+          files.Iter(action(_));
+      }
+  }
 }
