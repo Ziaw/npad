@@ -1,9 +1,0 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="NPad.Properties" GeneratedClassName="Settings">
-  <Profiles />
-  <Settings>
-    <Setting Name="SnippetsCollection" Type="NPad.Core.SnippetCollection" Scope="Application">
-      <Value Profile="(Default)">&lt;SnippetCollection&gt;&lt;Title&gt;Samples&lt;/Title&gt;&lt;Path&gt;Samples&lt;/Path&gt;&lt;/SnippetCollection&gt;</Value>
-    </Setting>
-  </Settings>
-</SettingsFile>
