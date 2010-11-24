@@ -15,7 +15,7 @@ using System.Windows.Forms;
 using ICSharpCode.TextEditor.Document;
 using System.Reflection;
 
-namespace NPad.Core
+namespace NPad
 {
   /// <summary>
   /// Description of MainForm.

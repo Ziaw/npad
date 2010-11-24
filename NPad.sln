@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{EDCC3B85-0BAD-11DB-BC1A-00112FDE8B61}") = "NPad.Core", "NPad.Core\NPad.Core.nproj", "{8A69AD43-20C5-45BB-8325-F0C623A74B29}"
+Project("{EDCC3B85-0BAD-11DB-BC1A-00112FDE8B61}") = "NPad", "NPad\NPad.nproj", "{8A69AD43-20C5-45BB-8325-F0C623A74B29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

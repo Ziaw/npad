@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 10001
 
-namespace NPad.Core
+namespace NPad
 {
   public partial class MainForm
   {

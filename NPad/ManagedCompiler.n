@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NPad.Core
+namespace NPad
 {
   /// <summary>
   /// Description of Compiler.

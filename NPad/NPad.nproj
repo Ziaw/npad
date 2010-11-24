@@ -3,7 +3,7 @@
   <PropertyGroup>
     <NoStdLib>true</NoStdLib>
     <Nemerle Condition=" '$(Nemerle)' == '' ">$(ProgramFiles)\Nemerle</Nemerle>
-    <Name>NPad.Core</Name>
+    <Name>NPad</Name>
     <TargetPlatform>v2</TargetPlatform>
   </PropertyGroup>
   <PropertyGroup>
@@ -14,8 +14,8 @@
     <ProjectGuid>{8a69ad43-20c5-45bb-8325-f0c623a74b29}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NPad.Core</RootNamespace>
-    <AssemblyName>NPad.Core</AssemblyName>
+    <RootNamespace>NPad</RootNamespace>
+    <AssemblyName>NPad</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\NPad.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\NPad.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.TextEditor, Version=3.0.0.3437, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a">
