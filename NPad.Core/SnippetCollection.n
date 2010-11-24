@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Nemerle.Collections;
+
+namespace NPad.Core
+{
+    public class SnippetCollection
+    {
+        fileMask = "*.n";
+        
+        public Title : string { get; set; }
+        public Path : string { get; set; }
+        
+        public ForEachFile(path : string, action : Action[string]) : void 
+        {
+            def files = Directory.GetFiles(Path.Combine(path, Path), fileMask);
+            
+            files.Iter(action(_));
+        }
+    }
+}

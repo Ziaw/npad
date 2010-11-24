@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPad", "NPad\NPad.csproj", "{A093840C-B8D2-4A2F-86A8-F0969DAF9D6E}"
+EndProject
+Project("{EDCC3B85-0BAD-11DB-BC1A-00112FDE8B61}") = "NPad.Core", "NPad.Core\NPad.Core.nproj", "{8A69AD43-20C5-45BB-8325-F0C623A74B29}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A093840C-B8D2-4A2F-86A8-F0969DAF9D6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A093840C-B8D2-4A2F-86A8-F0969DAF9D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A093840C-B8D2-4A2F-86A8-F0969DAF9D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A093840C-B8D2-4A2F-86A8-F0969DAF9D6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A69AD43-20C5-45BB-8325-F0C623A74B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A69AD43-20C5-45BB-8325-F0C623A74B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A69AD43-20C5-45BB-8325-F0C623A74B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A69AD43-20C5-45BB-8325-F0C623A74B29}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

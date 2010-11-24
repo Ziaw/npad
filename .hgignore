@@ -1,0 +1,8 @@
+relre:.*/bin/.*
+relre:.*/obj/.*
+glob:*.ReSharper
+glob:_ReSharper.*
+glob:*.user
+glob:*.suo
+glob:*.sln.cache
+glob:*.resharper
