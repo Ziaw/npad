@@ -11,13 +11,13 @@ namespace NPad
   /// <summary>
   /// Description of RunState.
   /// </summary>
-  public variant RunState
+  public enum RunState
   {
     | Undefined
     | Compiling
     | Running
     | CompilationFailed
-    | RuntimeExceptionOccurs {e : Exception}
+    | RuntimeExceptionOccurs
     | Complete
   }
 }

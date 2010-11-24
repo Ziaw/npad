@@ -13,16 +13,18 @@ namespace NPad
   /// <summary>
   /// Description of AppRunner.
   /// </summary>
-  public class AppRunner
+  public class AppRunner : MarshalByRefObject
   {
-    nemerlePath : string;
-    comilerType : CompilerType;
+    mutable nemerlePath : string;
+    mutable comilerType : CompilerType;
     
-    public this(nemerlePath : string, compilerType : CompilerType)
+    public this() {}
+    
+    public Setup(nemerlePath : string, compilerType : CompilerType) : void
     {
       this.nemerlePath = nemerlePath;
       this.comilerType = compilerType;
-      RunState = RunState.Undefined();
+      RunState = RunState.Undefined;
     }
     
     public RunState : RunState { get; private set; }
@@ -32,7 +34,7 @@ namespace NPad
       def compiler = createCompiler();
       using (output = StringWriter())
       {
-        RunState = RunState.Compiling();
+        RunState = RunState.Compiling;
         match (compiler.Compile(file, output))
         {
           | null =>
@@ -44,7 +46,7 @@ namespace NPad
 
             when (entryPoint == null)
             {
-              RunState = RunState.CompilationFailed();
+              RunState = RunState.CompilationFailed;
               output.Write("static Main() : void not found");
             }
               
@@ -79,14 +81,14 @@ namespace NPad
             | i => throw ArgumentException($"Invalid Main args count $i");
           }
     
-          RunState = RunState.Running();
+          RunState = RunState.Running;
           _ = entryPoint.Invoke(null, parms);
-          RunState = RunState.Complete();
+          RunState = RunState.Complete;
         }
         catch
         {
           | e => 
-            RunState = RunState.RuntimeExceptionOccurs(e);
+            RunState = RunState.RuntimeExceptionOccurs;
             output.WriteLine(e)
         }
         finally

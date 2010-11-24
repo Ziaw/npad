@@ -9,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.IO;
 using System.Windows.Forms;
 
@@ -107,8 +108,8 @@ namespace NPad
       
       def (fileName, separator) = match (currentFileName)
       {
-          | null => ("", "")
-          | path => (Path.GetFileName(path), " - ")
+        | null => ("", "")
+        | path => (Path.GetFileName(path), " - ")
       }
       
       Text = $"$(dirty)$(fileName)$(separator)Nemerle Pad";
@@ -133,14 +134,35 @@ namespace NPad
         | some => (some, false)
       }
       
+      def assemblyFullName = Assembly.GetExecutingAssembly().FullName;
+      def domain = AppDomain.CreateDomain(assemblyFullName);
+      
       try
       {
         codeEditor.SaveFile(fileName);
+        
         unless (isTemp)
           isDirty = false;
+        
+        
+        def runner = domain
+          .CreateInstanceAndUnwrap(assemblyFullName, typeof(AppRunner).FullName) :> AppRunner;
+        
+        runner.Setup(nemerlePath, CompilerType.Managed);
+
+        def result = runner.CompileAndRun(FileInfo(fileName));
+        
+        def logFileName = if (isTemp)
+            "snippet.n"
+          else
+            Path.GetFileName(fileName);
+        
+        def escapedName = Regex.Escape(fileName);
+
+        def result = Regex
+          .Replace(result, $"^$(escapedName)", logFileName, RegexOptions.Multiline);
           
-        def runner = AppRunner(nemerlePath, CompilerType.Managed());
-        outputTextBox.Text = runner.CompileAndRun(FileInfo(fileName));
+        outputTextBox.Text = result;
       }
       catch
       {
@@ -149,7 +171,8 @@ namespace NPad
       }
       finally
       {
-        // when (isTemp) File.Delete(fileName)
+        AppDomain.Unload(domain);
+        when (isTemp) File.Delete(fileName)
       }
     }
   }

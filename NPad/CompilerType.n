@@ -11,7 +11,7 @@ namespace NPad
   /// <summary>
   /// Description of CompilerType.
   /// </summary>
-  public variant CompilerType
+  public enum CompilerType
   {
     | Managed
   }
