@@ -22,8 +22,14 @@ namespace NPad
   /// </summary>
   public partial class MainForm : Form
   {
-    compiler = ManagedCompiler() : ICompiler ;
+    mutable nemerlePath : string;
   
+    mutable _isDirty : bool;
+    isDirty : bool { get {_isDirty}; set {_isDirty = value; updateTitle()} }
+
+    mutable _currentFileName : string;
+    currentFileName : string { get {_currentFileName}; set {_currentFileName = value; updateTitle()} }
+    
     public this()
     {
       InitializeComponent();
@@ -42,15 +48,13 @@ namespace NPad
             Directory.Exists(path) && File.Exists(Path.Combine(path, "ncc.exe"))
         }
         
-        def nemerlePath = searchPaths
+        nemerlePath = searchPaths
           .Map(Environment.ExpandEnvironmentVariables)
           .FirstOrDefault(isCorrectPath);
         
-        if (String.IsNullOrEmpty(nemerlePath))
+        when (String.IsNullOrEmpty(nemerlePath))
           _ = MessageBox.Show(
                 "Nemerle not found. Set Nemerle environment variable or install nemerle into Program Files\\Nemerle");
-        else
-          compiler.SetNemerlePath(nemerlePath);
     }
     
     private initEditor() : void
@@ -59,7 +63,6 @@ namespace NPad
         codeEditor.Document.DocumentChanged += (_, _) =>
         {
             isDirty = true;
-            updateTitle();
         };
     }
 
@@ -96,11 +99,7 @@ namespace NPad
         codeEditor.Document.HighlightingStrategy = GetHighlightingStrategy();
         currentFileName = fileName;
         isDirty = false;
-        updateTitle();
     }
-
-    isDirty : bool { get; set; }
-    currentFileName : string { get; set; }
 
     updateTitle() : void 
     {
@@ -127,73 +126,30 @@ namespace NPad
     
     runCode() : void
     {
-      mutable final = () => { };
-      
-      def fileName = match (currentFileName)
+      def (fileName, isTemp) = match (currentFileName)
       {
         | null => 
-          //final = () => File.Delete(fileName); commented by no release file nemerle compiler due to exception
-          Path.GetTempFileName();
-        | some => some
+          (Path.GetTempFileName(), true);
+        | some => (some, false)
       }
       
-      using (log = StringWriter())
+      try
       {
-        try
-        {
-            codeEditor.SaveFile(fileName);
-
-            match (compiler.Compile(FileInfo(fileName), log))
-            {
-              | null =>
-                outputTextBox.Text = log.ToString();
-              | assembly =>
-                def entryPoint = assembly.GetTypes()
-                    .Select(t => t.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
-                    .SingleOrDefault(m => m != null);
-
-                when (entryPoint == null)
-                    throw InvalidOperationException("static Main() : void not found");
-                
-                runProgram(entryPoint);
-            }
-        }
-        catch
-        {
-          | e =>
-            outputTextBox.Text = 
-                e.Message + "\n" +
-                log.ToString();
-        }
-        finally
-        {
-            final();
-        }
-      }
-    }
-
-    private runProgram(entryPoint : MethodInfo) : void
-    {
-      using (output = StringWriter())
-      {
-        def oldOutput = Console.Out;
-        try
-        {
-          Console.SetOut(output);
+        codeEditor.SaveFile(fileName);
+        unless (isTemp)
+          isDirty = false;
           
-          def parms = match (entryPoint.GetParameters().Length)
-          {
-            | 0 => array(0)
-            | 1 => array[array(0) : array[string]]
-            | i => throw ArgumentException($"Invalid Main args count $i");
-          }
-          _ = entryPoint.Invoke(null, parms);
-          outputTextBox.Text = output.ToString();
-        }
-        finally
-        {
-          Console.SetOut(oldOutput);
-        }
+        def runner = AppRunner(nemerlePath, CompilerType.Managed());
+        outputTextBox.Text = runner.CompileAndRun(FileInfo(fileName));
+      }
+      catch
+      {
+        | e =>
+          outputTextBox.Text = e.ToString()
+      }
+      finally
+      {
+        // when (isTemp) File.Delete(fileName)
       }
     }
   }

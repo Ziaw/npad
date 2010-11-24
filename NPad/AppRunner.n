@@ -1,0 +1,100 @@
+﻿using Nemerle.Collections;
+using Nemerle.Text;
+using Nemerle.Utility;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+using System.Reflection;
+
+namespace NPad
+{
+  /// <summary>
+  /// Description of AppRunner.
+  /// </summary>
+  public class AppRunner
+  {
+    nemerlePath : string;
+    comilerType : CompilerType;
+    
+    public this(nemerlePath : string, compilerType : CompilerType)
+    {
+      this.nemerlePath = nemerlePath;
+      this.comilerType = compilerType;
+      RunState = RunState.Undefined();
+    }
+    
+    public RunState : RunState { get; private set; }
+     
+    public CompileAndRun(file: FileInfo) : string
+    {
+      def compiler = createCompiler();
+      using (output = StringWriter())
+      {
+        RunState = RunState.Compiling();
+        match (compiler.Compile(file, output))
+        {
+          | null =>
+            output.ToString();
+          | assembly =>
+            def entryPoint = assembly.GetTypes()
+                .Select(t => t.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                .SingleOrDefault(m => m != null);
+
+            when (entryPoint == null)
+            {
+              RunState = RunState.CompilationFailed();
+              output.Write("static Main() : void not found");
+            }
+              
+            runProgram(entryPoint);
+        }
+      }
+    }
+     
+    createCompiler() : ICompiler
+    {
+      def compiler = match (comilerType)
+      {
+        | Managed => ManagedCompiler()
+      }
+      compiler.SetNemerlePath(nemerlePath);
+      compiler
+    }
+    
+    private runProgram(entryPoint : MethodInfo) : string
+    {
+      using (output = StringWriter())
+      {
+        def oldOutput = Console.Out;
+        try
+        {
+          Console.SetOut(output);
+          
+          def parms = match (entryPoint.GetParameters().Length)
+          {
+            | 0 => array(0)
+            | 1 => array[array(0) : array[string]]
+            | i => throw ArgumentException($"Invalid Main args count $i");
+          }
+    
+          RunState = RunState.Running();
+          _ = entryPoint.Invoke(null, parms);
+          RunState = RunState.Complete();
+        }
+        catch
+        {
+          | e => 
+            RunState = RunState.RuntimeExceptionOccurs(e);
+            output.WriteLine(e)
+        }
+        finally
+        {
+          Console.SetOut(oldOutput);
+        }
+        output.ToString();
+      }
+    }
+  }
+}

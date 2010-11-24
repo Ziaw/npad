@@ -84,6 +84,12 @@
     <Folder Include="Samples\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppRunner.n">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CompilerType.n">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MainForm.Designer.n">
       <SubType>Code</SubType>
       <DependentUpon>MainForm.n</DependentUpon>
@@ -103,6 +109,9 @@
     <Content Include="Samples\HelloWorld.n">
       <SubType>Code</SubType>
     </Content>
+    <Compile Include="RunState.n">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SnippetCollection.n">
       <SubType>Code</SubType>
     </Compile>
