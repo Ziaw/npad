@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using ICSharpCode.TextEditor.Document;
 using ICSharpCode.TextEditor;
 using System.Reflection;
+using NPad.Configuration;
 
 namespace NPad
 {
@@ -24,8 +25,6 @@ namespace NPad
   /// </summary>
   public partial class MainForm : Form
   {
-    mutable nemerlePath : string;
-  
     isDirty : bool 
     { 
       mutable _isDirty : bool;
@@ -95,18 +94,8 @@ namespace NPad
     
     initCompiler() : void 
     {
-        def searchPaths = [@"%Nemerle%", @"%ProgramFiles%\Nemerle"];
-        
-        def isCorrectPath(path)
-        {
-            Directory.Exists(path) && File.Exists(Path.Combine(path, "ncc.exe"))
-        }
-        
-        nemerlePath = searchPaths
-          .Map(Environment.ExpandEnvironmentVariables)
-          .FirstOrDefault(isCorrectPath);
-        
-        when (String.IsNullOrEmpty(nemerlePath))
+      
+      when (String.IsNullOrEmpty(Cfg.Instance.NemerlePath))
           _ = MessageBox.Show(
                 "Nemerle not found. Set Nemerle environment variable or install nemerle into Program Files\\Nemerle");
     }
@@ -307,7 +296,11 @@ namespace NPad
       }
       
       def assemblyFullName = Assembly.GetExecutingAssembly().FullName;
-      def domain = AppDomain.CreateDomain(assemblyFullName);
+      
+      def domain = if (Cfg.Instance.UseSeparateDomain) 
+                     AppDomain.CreateDomain(assemblyFullName)
+                   else
+                     null;
       
       try
       {
@@ -316,11 +309,14 @@ namespace NPad
         unless (isTemp)
           isDirty = false;
         
+        def runner = match (domain)
+        { 
+          | null => AppRunner()
+          | some => 
+              some.CreateInstanceAndUnwrap(assemblyFullName, typeof(AppRunner).FullName) :> AppRunner;
+        }
         
-        def runner = domain
-          .CreateInstanceAndUnwrap(assemblyFullName, typeof(AppRunner).FullName) :> AppRunner;
-        
-        runner.Setup(nemerlePath, CompilerType.Managed);
+        runner.Setup(Cfg.Instance.NemerlePath, Cfg.Instance.CompilerType);
 
         def result = runner.CompileAndRun(FileInfo(fileName));
         
@@ -343,7 +339,7 @@ namespace NPad
       }
       finally
       {
-        AppDomain.Unload(domain);
+        when (domain != null) AppDomain.Unload(domain);
         when (isTemp) File.Delete(fileName)
       }
     }

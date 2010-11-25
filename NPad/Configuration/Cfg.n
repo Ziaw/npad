@@ -5,15 +5,82 @@ using Nemerle.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Configuration;
 
 namespace NPad.Configuration
 {
   /// <summary>
   /// Description of Cfg.
   /// </summary>
-  public class Cfg
+  public class Cfg: ApplicationSettingsBase
   {
+    [UserScopedSettingAttribute()]
+    [DefaultSettingValueAttribute("")]
+    public CustomNemerlePath : string { get {this["CustomNemerlePath"] :> string}  set { this["CustomNemerlePath"] = value} }
+    
     public NemerlePath : string { get; set; }
-    public CompilerType : CompilerType { get; set; }
+    
+    [UserScopedSettingAttribute()]
+    [DefaultSettingValueAttribute("True")]
+    public AutoDetectNemerlePath : bool { get {this["AutoDetectNemerlePath"] :> bool}  set { this["AutoDetectNemerlePath"] = value} }
+    
+    [UserScopedSettingAttribute()]
+    [DefaultSettingValueAttribute("Managed")]
+    public CompilerType : CompilerType { get {this["CompilerType"] :> CompilerType}  set { this["CompilerType"] = value} }
+    
+    [UserScopedSettingAttribute()]
+    [DefaultSettingValueAttribute("True")]
+    public UseSeparateDomain : bool { get {this["UseSeparateDomain"] :> bool}  set { this["UseSeparateDomain"] = value} }
+    
+    public this() 
+    {
+      base();
+
+      when (String.IsNullOrEmpty(NemerlePath))
+        findNemerlePath();
+        
+      this.SettingsLoaded += (_, _) => findNemerlePath();
+    }
+    
+    public findNemerlePath() : void
+    {
+      def isCorrectPath(path)
+      {
+        Directory.Exists(path) && File.Exists(Path.Combine(path, "ncc.exe"))
+      }
+      
+      NemerlePath = if (!AutoDetectNemerlePath && isCorrectPath(CustomNemerlePath))
+      {
+        CustomNemerlePath
+      }
+      else
+      {
+        def searchPaths = [
+          AppDomain.CurrentDomain.BaseDirectory, 
+          @"%Nemerle%", 
+          @"%ProgramFiles%\Nemerle"
+        ];
+          
+        searchPaths
+          .Map(Environment.ExpandEnvironmentVariables)
+          .FirstOrDefault(isCorrectPath)
+      }
+    }
+    
+    static mutable defaultCfg : Cfg;
+    
+    public static Instance : Cfg
+    {
+      get 
+      {
+        when (defaultCfg == null)
+        {
+          defaultCfg = ApplicationSettingsBase.Synchronized(Cfg()) :> Cfg;
+        }
+          
+        defaultCfg
+      }
+    }
   }
 }
