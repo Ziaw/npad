@@ -119,6 +119,13 @@
     <Compile Include="RunState.n">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SettingsForm.Designer.n">
+      <SubType>Code</SubType>
+      <DependentUpon>SettingsForm.n</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsForm.n">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SnippetCollection.n">
       <SubType>Code</SubType>
     </Compile>
@@ -126,6 +133,9 @@
   <ItemGroup>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.n</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsForm.resx">
+      <DependentUpon>SettingsForm.n</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(Nemerle)\Nemerle.MSBuild.targets" />

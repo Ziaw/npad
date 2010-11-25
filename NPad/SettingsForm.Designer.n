@@ -1,0 +1,173 @@
+﻿#pragma warning disable 10001
+
+namespace NPad
+{
+  public partial class SettingsForm
+  {
+    /// <summary>
+    /// Required designer variable.
+    /// </summary>
+    private mutable components : System.ComponentModel.IContainer = null;
+
+    /// <summary>
+    /// Clean up any resources being used.
+    /// </summary>
+    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+    protected override Dispose(disposing : bool) : void
+    {
+      when (disposing && components != null)
+        components.Dispose();
+
+      base.Dispose(disposing);
+    }
+
+    #region
+
+    /// <summary>
+    /// Required method for Designer support - do not modify
+    /// the contents of this method with the code editor.
+    /// </summary>
+    private InitializeComponent() : void
+    {
+      this.groupBox1 = System.Windows.Forms.GroupBox();
+      this.buttonBrowse = System.Windows.Forms.Button();
+      this.nemerlePathBox = System.Windows.Forms.TextBox();
+      this.useCustomPathRadio = System.Windows.Forms.RadioButton();
+      this.autoDetectRadio = System.Windows.Forms.RadioButton();
+      this.useSeparateDomainCheck = System.Windows.Forms.CheckBox();
+      this.buttonCancel = System.Windows.Forms.Button();
+      this.buttonOk = System.Windows.Forms.Button();
+      this.openDialog = System.Windows.Forms.OpenFileDialog();
+      this.groupBox1.SuspendLayout();
+      this.SuspendLayout();
+      // 
+      // groupBox1
+      // 
+      this.groupBox1.Controls.Add(this.buttonBrowse);
+      this.groupBox1.Controls.Add(this.nemerlePathBox);
+      this.groupBox1.Controls.Add(this.useCustomPathRadio);
+      this.groupBox1.Controls.Add(this.autoDetectRadio);
+      this.groupBox1.Location = System.Drawing.Point(12,  12);
+      this.groupBox1.Name = "groupBox1";
+      this.groupBox1.Size = System.Drawing.Size(525,  70);
+      this.groupBox1.TabIndex = 2;
+      this.groupBox1.TabStop = false;
+      this.groupBox1.Text = "Nemerle";
+      // 
+      // buttonBrowse
+      // 
+      this.buttonBrowse.Location = System.Drawing.Point(444,  40);
+      this.buttonBrowse.Name = "buttonBrowse";
+      this.buttonBrowse.Size = System.Drawing.Size(75,  23);
+      this.buttonBrowse.TabIndex = 3;
+      this.buttonBrowse.Text = "Browse...";
+      this.buttonBrowse.UseVisualStyleBackColor = true;
+      this.buttonBrowse.Click += System.EventHandler(this.buttonBrowse_Click);
+      // 
+      // nemerlePathBox
+      // 
+      this.nemerlePathBox.Location = System.Drawing.Point(70,  42);
+      this.nemerlePathBox.Name = "nemerlePathBox";
+      this.nemerlePathBox.Size = System.Drawing.Size(368,  20);
+      this.nemerlePathBox.TabIndex = 2;
+      // 
+      // useCustomPathRadio
+      // 
+      this.useCustomPathRadio.AutoSize = true;
+      this.useCustomPathRadio.Location = System.Drawing.Point(6,  42);
+      this.useCustomPathRadio.Name = "useCustomPathRadio";
+      this.useCustomPathRadio.Size = System.Drawing.Size(60,  17);
+      this.useCustomPathRadio.TabIndex = 1;
+      this.useCustomPathRadio.Text = "Custom";
+      this.useCustomPathRadio.UseVisualStyleBackColor = true;
+      // 
+      // autoDetectRadio
+      // 
+      this.autoDetectRadio.AutoSize = true;
+      this.autoDetectRadio.Checked = true;
+      this.autoDetectRadio.Location = System.Drawing.Point(6,  19);
+      this.autoDetectRadio.Name = "autoDetectRadio";
+      this.autoDetectRadio.Size = System.Drawing.Size(77,  17);
+      this.autoDetectRadio.TabIndex = 0;
+      this.autoDetectRadio.TabStop = true;
+      this.autoDetectRadio.Text = "Autodetect";
+      this.autoDetectRadio.UseVisualStyleBackColor = true;
+      // 
+      // useSeparateDomainCheck
+      // 
+      this.useSeparateDomainCheck.AutoSize = true;
+      this.useSeparateDomainCheck.Location = System.Drawing.Point(18,  88);
+      this.useSeparateDomainCheck.Name = "useSeparateDomainCheck";
+      this.useSeparateDomainCheck.Size = System.Drawing.Size(329,  17);
+      this.useSeparateDomainCheck.TabIndex = 3;
+      this.useSeparateDomainCheck.Text = "Use separate doman for compile and run samples (safe but slow)";
+      this.useSeparateDomainCheck.UseVisualStyleBackColor = true;
+      // 
+      // buttonCancel
+      // 
+      this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+      this.buttonCancel.Location = System.Drawing.Point(462,  128);
+      this.buttonCancel.Name = "buttonCancel";
+      this.buttonCancel.Size = System.Drawing.Size(75,  23);
+      this.buttonCancel.TabIndex = 4;
+      this.buttonCancel.Text = "Cancel";
+      this.buttonCancel.UseVisualStyleBackColor = true;
+      // 
+      // buttonOk
+      // 
+      this.buttonOk.Location = System.Drawing.Point(381,  128);
+      this.buttonOk.Name = "buttonOk";
+      this.buttonOk.Size = System.Drawing.Size(75,  23);
+      this.buttonOk.TabIndex = 5;
+      this.buttonOk.Text = "Ok";
+      this.buttonOk.UseVisualStyleBackColor = true;
+      this.buttonOk.Click += System.EventHandler(this.buttonOk_Click);
+      // 
+      // openDialog
+      // 
+      this.openDialog.FileName = "ncc.exe";
+      this.openDialog.Filter = "Nemerle compiler|ncc.exe";
+      this.openDialog.Title = "Select nemerle installation directory";
+      // 
+      // SettingsForm
+      // 
+      this.AcceptButton = this.buttonOk;
+      this.AutoScaleDimensions = System.Drawing.SizeF(6f,  13f);
+      this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.CancelButton = this.buttonCancel;
+      this.ClientSize = System.Drawing.Size(549,  163);
+      this.Controls.Add(this.buttonOk);
+      this.Controls.Add(this.buttonCancel);
+      this.Controls.Add(this.useSeparateDomainCheck);
+      this.Controls.Add(this.groupBox1);
+      this.Name = "SettingsForm";
+      this.ShowIcon = false;
+      this.ShowInTaskbar = false;
+      this.Text = "NPad settings";
+      this.groupBox1.ResumeLayout(false);
+      this.groupBox1.PerformLayout();
+      this.ResumeLayout(false);
+      this.PerformLayout();
+    }
+
+    #endregion
+  
+    private mutable groupBox1 : System.Windows.Forms.GroupBox;
+  
+    private mutable buttonBrowse : System.Windows.Forms.Button;
+  
+    private mutable nemerlePathBox : System.Windows.Forms.TextBox;
+  
+    private mutable useCustomPathRadio : System.Windows.Forms.RadioButton;
+  
+    private mutable autoDetectRadio : System.Windows.Forms.RadioButton;
+  
+    private mutable useSeparateDomainCheck : System.Windows.Forms.CheckBox;
+  
+    private mutable buttonCancel : System.Windows.Forms.Button;
+  
+    private mutable buttonOk : System.Windows.Forms.Button;
+  
+    private mutable openDialog : System.Windows.Forms.OpenFileDialog;
+  }
+}

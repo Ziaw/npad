@@ -88,6 +88,8 @@ namespace NPad
       subscribe([cutToolStripButton, cutToolStripMenuItem], constructEditorAction(Actions.Cut()));
       subscribe([copyToolStripButton, copyToolStripMenuItem], constructEditorAction(Actions.Copy()));
       subscribe([pasteToolStripButton, pasteToolStripMenuItem], constructEditorAction(Actions.Paste()));
+      
+      subscribe(settingsMenuItem, showSettingsDialog);
      
       aboutToolStripMenuItem.Enabled = false;
     }
@@ -284,6 +286,14 @@ namespace NPad
 			  editor.EndUpdate();
 				area.Caret.UpdateCaretPosition();
 			}
+    }
+    
+    showSettingsDialog() : void
+    {
+      using (dialog = SettingsForm())
+      {
+        _ = dialog.ShowDialog();
+      }
     }
     
     runCode() : void

@@ -1,0 +1,70 @@
+﻿using Nemerle.Collections;
+using Nemerle.Text;
+using Nemerle.Utility;
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.IO;
+
+using NPad.Configuration;
+
+
+namespace NPad
+{
+  /// <summary>
+  /// Description of SettingsForm.
+  /// </summary>
+  public partial class SettingsForm : Form
+  {
+    public this()
+    {
+      InitializeComponent();
+      def cfg = Cfg.Instance;
+      
+      autoDetectRadio.Checked = cfg.AutoDetectNemerlePath;
+      useCustomPathRadio.Checked = !cfg.AutoDetectNemerlePath;
+      
+      def customPath = cfg.CustomNemerlePath.Trim();
+      
+      nemerlePathBox.TextChanged += (_, _) => useCustomPathRadio.Checked = true;
+      
+      when (!String.IsNullOrEmpty(customPath))
+        nemerlePathBox.Text = customPath;
+        
+      useSeparateDomainCheck.Checked = cfg.UseSeparateDomain;
+      
+      this.FormClosed += (_, _) => {
+        match (this.DialogResult)
+        {
+          | OK => 
+            cfg.AutoDetectNemerlePath = autoDetectRadio.Checked;
+            cfg.CustomNemerlePath = nemerlePathBox.Text;
+            cfg.UseSeparateDomain = useSeparateDomainCheck.Checked;
+            cfg.Save();
+          | _ => ()
+        }
+      }
+    }
+  
+    private buttonOk_Click (_ : object,  _ : System.EventArgs) : void
+    {
+      DialogResult = DialogResult.OK;
+      Close();
+    }
+  
+    private buttonBrowse_Click (_ : object,  _ : System.EventArgs) : void
+    {
+      match (openDialog.ShowDialog())
+      {
+        | OK => nemerlePathBox.Text = Path.GetDirectoryName(openDialog.FileName)
+        | _ => ()
+      }
+    }
+  }
+}
