@@ -67,6 +67,8 @@ namespace NPad
       this.splitContainer2 = System.Windows.Forms.SplitContainer();
       this.codeEditor = ICSharpCode.TextEditor.TextEditorControl();
       this.outputTextBox = System.Windows.Forms.TextBox();
+      this.openFileDialog1 = System.Windows.Forms.OpenFileDialog();
+      this.saveFileDialog1 = System.Windows.Forms.SaveFileDialog();
       this.menuStrip1.SuspendLayout();
       this.toolStrip1.SuspendLayout();
       this.splitContainer1.Panel1.SuspendLayout();
@@ -231,7 +233,6 @@ namespace NPad
       this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
       this.runToolStripMenuItem.Size = System.Drawing.Size(40,  20);
       this.runToolStripMenuItem.Text = "&Run";
-      this.runToolStripMenuItem.Click += System.EventHandler(this.runToolStripMenuItem_Click);
       // 
       // helpToolStripMenuItem
       // 
@@ -409,6 +410,17 @@ namespace NPad
       this.outputTextBox.Size = System.Drawing.Size(502,  120);
       this.outputTextBox.TabIndex = 0;
       // 
+      // openFileDialog1
+      // 
+      this.openFileDialog1.DefaultExt = "n";
+      this.openFileDialog1.FileName = "openFileDialog1";
+      this.openFileDialog1.Filter = "Nemerle files|*.n|All files|*.*";
+      // 
+      // saveFileDialog1
+      // 
+      this.saveFileDialog1.DefaultExt = "n";
+      this.saveFileDialog1.Filter = "Nemerle files|*.n|All files|*.*";
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = System.Drawing.SizeF(6f,  13f);
@@ -511,5 +523,9 @@ namespace NPad
     private mutable fileBrowser : System.Windows.Forms.TreeView;
   
     private mutable runToolStripMenuItem : System.Windows.Forms.ToolStripMenuItem;
+  
+    private mutable openFileDialog1 : System.Windows.Forms.OpenFileDialog;
+  
+    private mutable saveFileDialog1 : System.Windows.Forms.SaveFileDialog;
   }
 }

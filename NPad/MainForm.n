@@ -14,6 +14,7 @@ using System.IO;
 using System.Windows.Forms;
 
 using ICSharpCode.TextEditor.Document;
+using ICSharpCode.TextEditor;
 using System.Reflection;
 
 namespace NPad
@@ -25,11 +26,19 @@ namespace NPad
   {
     mutable nemerlePath : string;
   
-    mutable _isDirty : bool;
-    isDirty : bool { get {_isDirty}; set {_isDirty = value; updateTitle()} }
+    isDirty : bool 
+    { 
+      mutable _isDirty : bool;
+      get {_isDirty}; 
+      set {_isDirty = value; updateTitle()} 
+    }
 
-    mutable _currentFileName : string;
-    currentFileName : string { get {_currentFileName}; set {_currentFileName = value; updateTitle()} }
+    currentFileName : string 
+    { 
+      mutable _currentFileName : string;
+      get {_currentFileName}; 
+      set {_currentFileName = value; updateTitle()} 
+    }
     
     public this()
     {
@@ -38,8 +47,46 @@ namespace NPad
       initCompiler();
       initEditor();
       initFileBrowser();
+      initToolbarAndMenu();
     }
 
+    #region Event system
+    subscribers : Dictionary[object, List[ToolStripItem]] = Dictionary();
+    subscribe(item : ToolStripItem, action : void -> void) : void
+    {
+      item.Click += fun(_, _) { action() } 
+
+      if (subscribers.ContainsKey(action))
+        subscribers[action].Add(item)
+      else
+        subscribers[action] = List([item])
+    }
+    
+    subscribe(items : IEnumerable[ToolStripItem], action : void -> void) : void
+    {
+      items.Iter(subscribe(_, action))
+    }
+    #endregion
+    
+    initToolbarAndMenu() : void 
+    {
+      subscribe([newToolStripButton, newToolStripMenuItem], newFile);
+      subscribe([openToolStripButton, openToolStripMenuItem], openFile);
+      subscribe([saveToolStripButton, saveToolStripMenuItem], saveFile);
+      subscribe(saveAsToolStripMenuItem, saveFileAs);
+      subscribe(exitToolStripMenuItem, exit);
+
+      subscribe(runToolStripMenuItem, runCode);
+
+      subscribe(undoToolStripMenuItem, constructEditorAction(Actions.Undo()));
+      subscribe(redoToolStripMenuItem, constructEditorAction(Actions.Redo()));
+      subscribe([cutToolStripButton, cutToolStripMenuItem], constructEditorAction(Actions.Cut()));
+      subscribe([copyToolStripButton, copyToolStripMenuItem], constructEditorAction(Actions.Copy()));
+      subscribe([pasteToolStripButton, pasteToolStripMenuItem], constructEditorAction(Actions.Paste()));
+     
+      aboutToolStripMenuItem.Enabled = false;
+    }
+    
     initCompiler() : void 
     {
         def searchPaths = [@"%Nemerle%", @"%ProgramFiles%\Nemerle"];
@@ -120,9 +167,127 @@ namespace NPad
       HighlightingStrategyFactory.CreateHighlightingStrategy("C#");
     }
     
-    private runToolStripMenuItem_Click (_ : object,  _ : System.EventArgs) : void
+    
+    #region Menu commands
+    openFile() : void
     {
-      runCode();
+      def open() 
+      {
+        match (openFileDialog1.ShowDialog())
+        {
+          | OK => 
+            currentFileName = openFileDialog1.FileName;
+            codeEditor.LoadFile(currentFileName);
+            isDirty = false;
+          | Cancel => ();
+          | _ => throw ArgumentException()
+        }
+      }
+      
+      trySaveBeforeAction(open)
+    }
+
+    trySaveBeforeAction(action : void -> void) : void
+    {
+      if (isDirty)
+      {
+        match (MessageBox.Show("File changed, save?", "File changes may be lost", MessageBoxButtons.YesNoCancel))
+        {
+          | Yes => 
+            saveFile();
+            action();
+          | No => 
+            action();
+          | Cancel => ();
+          | _ => throw ArgumentException()
+        }
+      }
+      else
+        action()
+    }
+    
+    newFile() : void
+    {
+      def newFile()
+      {
+        // isnt clear editor api?
+        doEditorAction(Actions.SelectWholeDocument());
+        doEditorAction(Actions.Delete());
+        
+        currentFileName = null;
+        isDirty = false;
+      }
+      
+      trySaveBeforeAction(newFile)
+    }
+
+    saveFile() : void
+    {
+      if (currentFileName == null)
+        saveFileAs()
+      else
+      {
+        codeEditor.SaveFile(currentFileName);
+        isDirty = false;
+      }
+    }
+
+    saveFileAs() : void
+    {
+      saveFileDialog1.FileName = match (currentFileName)
+      {
+        | null => ""
+        | name => name
+      }
+        
+      match (saveFileDialog1.ShowDialog())
+      {
+        | OK => 
+          codeEditor.SaveFile(saveFileDialog1.FileName);
+          currentFileName = saveFileDialog1.FileName;
+          isDirty = false;
+        | Cancel => ();
+        | _ => throw ArgumentException()
+      }
+    }
+
+    exit() : void
+    {
+      trySaveBeforeAction(Close);
+    }
+    
+    
+
+    constructEditorAction(action : Actions.IEditAction) : void -> void
+    {
+      () => doEditorAction(action)
+    }
+    
+    doEditorAction(action : Actions.IEditAction) : void
+    {
+      def editor = codeEditor;
+			def area = editor.ActiveTextAreaControl.TextArea;
+			editor.BeginUpdate();
+			
+			try 
+			{
+				lock (editor.Document) 
+				{
+					action.Execute(area);
+					when (area.SelectionManager.HasSomethingSelected && area.AutoClearSelection /*&& caretchanged*/) 
+					{
+						when (area.Document.TextEditorProperties.DocumentSelectionMode == DocumentSelectionMode.Normal) 
+						{
+							area.SelectionManager.ClearSelection();
+						}
+					}
+				}
+			} 
+			finally 
+			{
+			  editor.EndUpdate();
+				area.Caret.UpdateCaretPosition();
+			}
     }
     
     runCode() : void
@@ -175,5 +340,6 @@ namespace NPad
         when (isTemp) File.Delete(fileName)
       }
     }
+    #endregion
   }
 }

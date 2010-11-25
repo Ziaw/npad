@@ -1,0 +1,19 @@
+﻿using Nemerle.Collections;
+using Nemerle.Text;
+using Nemerle.Utility;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace NPad.Configuration
+{
+  /// <summary>
+  /// Description of Cfg.
+  /// </summary>
+  public class Cfg
+  {
+    public NemerlePath : string { get; set; }
+    public CompilerType : CompilerType { get; set; }
+  }
+}
