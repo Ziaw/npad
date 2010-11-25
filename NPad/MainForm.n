@@ -170,7 +170,7 @@ namespace NPad
     
     GetHighlightingStrategy() : IHighlightingStrategy 
     {
-      HighlightingStrategyFactory.CreateHighlightingStrategy("C#");
+      HighlightingStrategyFactory.CreateHighlightingStrategy("Nemerle");
     }
     
     
@@ -181,12 +181,9 @@ namespace NPad
       {
         match (openFileDialog1.ShowDialog())
         {
-          | OK => 
-            currentFileName = openFileDialog1.FileName;
-            codeEditor.LoadFile(currentFileName);
-            isDirty = false;
-          | Cancel => ();
-          | _ => throw ArgumentException()
+          | OK      => loadFile(openFileDialog1.FileName);
+          | Cancel  => ();
+          | _       => throw ArgumentException()
         }
       }
       
@@ -197,7 +194,12 @@ namespace NPad
     {
       if (isDirty)
       {
-        match (MessageBox.Show("File changed, save?", "File changes may be lost", MessageBoxButtons.YesNoCancel))
+        def fileName = match (currentFileName)
+        {
+          | null => "File"
+          | path => Path.GetFileName(path)
+        }
+        match (MessageBox.Show($"$fileName was changed, save?", "File changes may be lost", MessageBoxButtons.YesNoCancel))
         {
           | Yes => 
             saveFile();
@@ -219,7 +221,8 @@ namespace NPad
         // isnt clear editor api?
         doEditorAction(Actions.SelectWholeDocument());
         doEditorAction(Actions.Delete());
-        
+        codeEditor.Document.HighlightingStrategy = GetHighlightingStrategy();
+
         currentFileName = null;
         isDirty = false;
       }
@@ -261,8 +264,6 @@ namespace NPad
     {
       trySaveBeforeAction(Close);
     }
-    
-    
 
     constructEditorAction(action : Actions.IEditAction) : void -> void
     {

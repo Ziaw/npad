@@ -22,6 +22,10 @@
 	<Mode file       = "CSharp-Mode.xshd"
 	      name       = "C#"
 	      extensions = ".cs"/>
+
+  <Mode file       = "Nemerle-Mode.xshd"
+	      name       = "Nemerle"
+	      extensions = ".n"/>
 	
 	<Mode file       = "HTML-Mode.xshd"
 	      name       = "HTML"

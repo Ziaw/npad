@@ -37,7 +37,7 @@
     <DocumentationFile>bin\Release\NPad.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.TextEditor, Version=3.0.0.3437, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a">
+    <Reference Include="ICSharpCode.TextEditor">
       <Name>ICSharpCode.TextEditor</Name>
       <AssemblyName>ICSharpCode.TextEditor.dll</AssemblyName>
       <HintPath>..\lib\ICSharpCode.TextEditor.dll</HintPath>

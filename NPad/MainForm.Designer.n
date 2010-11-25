@@ -403,17 +403,19 @@ namespace NPad
       // 
       // outputTextBox
       // 
+      this.outputTextBox.BackColor = System.Drawing.SystemColors.Window;
       this.outputTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
       this.outputTextBox.Location = System.Drawing.Point(0,  0);
       this.outputTextBox.Multiline = true;
       this.outputTextBox.Name = "outputTextBox";
+      this.outputTextBox.ReadOnly = true;
+      this.outputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
       this.outputTextBox.Size = System.Drawing.Size(502,  120);
       this.outputTextBox.TabIndex = 0;
       // 
       // openFileDialog1
       // 
       this.openFileDialog1.DefaultExt = "n";
-      this.openFileDialog1.FileName = "openFileDialog1";
       this.openFileDialog1.Filter = "Nemerle files|*.n|All files|*.*";
       // 
       // saveFileDialog1
