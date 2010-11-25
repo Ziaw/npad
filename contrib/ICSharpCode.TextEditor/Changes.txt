@@ -1,0 +1,1 @@
+Changed Project\Src\Gui\TextAreaControl.cs:223, fixes NRE under mono

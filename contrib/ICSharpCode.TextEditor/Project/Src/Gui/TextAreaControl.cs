@@ -217,8 +217,15 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 		
+		bool firstAdjustScrollBarsCall = true;
 		public void AdjustScrollBars()
 		{
+			if (firstAdjustScrollBarsCall) // monkey patch NRE crashing under mono
+			{
+				firstAdjustScrollBarsCall = false;
+				return;
+			}
+
 			adjustScrollBarsOnNextUpdate = false;
 			vScrollBar.Minimum = 0;
 			// number of visible lines in document (folding!)
