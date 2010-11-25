@@ -49,8 +49,17 @@ namespace NPad
               RunState = RunState.CompilationFailed;
               output.Write("static Main() : void not found");
             }
-              
-            runProgram(entryPoint);
+            
+            def oldPwd = Environment.CurrentDirectory;
+            try 
+            {  
+              Environment.CurrentDirectory = file.Directory.FullName;
+              runProgram(entryPoint);
+            }
+            finally
+            {
+              Environment.CurrentDirectory = oldPwd;
+            }
         }
       }
     }

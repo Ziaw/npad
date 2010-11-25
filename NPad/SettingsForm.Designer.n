@@ -127,6 +127,7 @@ namespace NPad
       // 
       this.openDialog.FileName = "ncc.exe";
       this.openDialog.Filter = "Nemerle compiler|ncc.exe";
+      this.openDialog.RestoreDirectory = true;
       this.openDialog.Title = "Select nemerle installation directory";
       // 
       // SettingsForm

@@ -37,6 +37,8 @@ namespace NPad
       this.toolStripSeparator = System.Windows.Forms.ToolStripSeparator();
       this.saveToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem();
       this.saveAsToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem();
+      this.toolStripSeparator6 = System.Windows.Forms.ToolStripSeparator();
+      this.settingsMenuItem = System.Windows.Forms.ToolStripMenuItem();
       this.toolStripSeparator2 = System.Windows.Forms.ToolStripSeparator();
       this.exitToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem();
       this.editToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem();
@@ -69,8 +71,6 @@ namespace NPad
       this.outputTextBox = System.Windows.Forms.TextBox();
       this.openFileDialog1 = System.Windows.Forms.OpenFileDialog();
       this.saveFileDialog1 = System.Windows.Forms.SaveFileDialog();
-      this.settingsMenuItem = System.Windows.Forms.ToolStripMenuItem();
-      this.toolStripSeparator6 = System.Windows.Forms.ToolStripSeparator();
       this.menuStrip1.SuspendLayout();
       this.toolStrip1.SuspendLayout();
       this.splitContainer1.Panel1.SuspendLayout();
@@ -148,6 +148,18 @@ namespace NPad
       this.saveAsToolStripMenuItem.Size = System.Drawing.Size(158,  22);
       this.saveAsToolStripMenuItem.Text = "Save &As";
       // 
+      // toolStripSeparator6
+      // 
+      this.toolStripSeparator6.Name = "toolStripSeparator6";
+      this.toolStripSeparator6.Size = System.Drawing.Size(155,  6);
+      // 
+      // settingsMenuItem
+      // 
+      this.settingsMenuItem.Name = "settingsMenuItem";
+      this.settingsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G) :> System.Windows.Forms.Keys);
+      this.settingsMenuItem.Size = System.Drawing.Size(158,  22);
+      this.settingsMenuItem.Text = "Settin&gs";
+      // 
       // toolStripSeparator2
       // 
       this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -178,20 +190,20 @@ namespace NPad
       // 
       this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
       this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z) :> System.Windows.Forms.Keys);
-      this.undoToolStripMenuItem.Size = System.Drawing.Size(152,  22);
+      this.undoToolStripMenuItem.Size = System.Drawing.Size(144,  22);
       this.undoToolStripMenuItem.Text = "&Undo";
       // 
       // redoToolStripMenuItem
       // 
       this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
       this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y) :> System.Windows.Forms.Keys);
-      this.redoToolStripMenuItem.Size = System.Drawing.Size(152,  22);
+      this.redoToolStripMenuItem.Size = System.Drawing.Size(144,  22);
       this.redoToolStripMenuItem.Text = "&Redo";
       // 
       // toolStripSeparator3
       // 
       this.toolStripSeparator3.Name = "toolStripSeparator3";
-      this.toolStripSeparator3.Size = System.Drawing.Size(149,  6);
+      this.toolStripSeparator3.Size = System.Drawing.Size(141,  6);
       // 
       // cutToolStripMenuItem
       // 
@@ -199,7 +211,7 @@ namespace NPad
       this.cutToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
       this.cutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X) :> System.Windows.Forms.Keys);
-      this.cutToolStripMenuItem.Size = System.Drawing.Size(152,  22);
+      this.cutToolStripMenuItem.Size = System.Drawing.Size(144,  22);
       this.cutToolStripMenuItem.Text = "Cu&t";
       // 
       // copyToolStripMenuItem
@@ -208,7 +220,7 @@ namespace NPad
       this.copyToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
       this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C) :> System.Windows.Forms.Keys);
-      this.copyToolStripMenuItem.Size = System.Drawing.Size(152,  22);
+      this.copyToolStripMenuItem.Size = System.Drawing.Size(144,  22);
       this.copyToolStripMenuItem.Text = "&Copy";
       // 
       // pasteToolStripMenuItem
@@ -217,18 +229,18 @@ namespace NPad
       this.pasteToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
       this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V) :> System.Windows.Forms.Keys);
-      this.pasteToolStripMenuItem.Size = System.Drawing.Size(152,  22);
+      this.pasteToolStripMenuItem.Size = System.Drawing.Size(144,  22);
       this.pasteToolStripMenuItem.Text = "&Paste";
       // 
       // toolStripSeparator4
       // 
       this.toolStripSeparator4.Name = "toolStripSeparator4";
-      this.toolStripSeparator4.Size = System.Drawing.Size(149,  6);
+      this.toolStripSeparator4.Size = System.Drawing.Size(141,  6);
       // 
       // selectAllToolStripMenuItem
       // 
       this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-      this.selectAllToolStripMenuItem.Size = System.Drawing.Size(152,  22);
+      this.selectAllToolStripMenuItem.Size = System.Drawing.Size(144,  22);
       this.selectAllToolStripMenuItem.Text = "Select &All";
       // 
       // runToolStripMenuItem
@@ -249,7 +261,7 @@ namespace NPad
       // aboutToolStripMenuItem
       // 
       this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-      this.aboutToolStripMenuItem.Size = System.Drawing.Size(152,  22);
+      this.aboutToolStripMenuItem.Size = System.Drawing.Size(116,  22);
       this.aboutToolStripMenuItem.Text = "&About...";
       // 
       // toolStrip1
@@ -421,23 +433,13 @@ namespace NPad
       // 
       this.openFileDialog1.DefaultExt = "n";
       this.openFileDialog1.Filter = "Nemerle files|*.n|All files|*.*";
+      this.openFileDialog1.RestoreDirectory = true;
       // 
       // saveFileDialog1
       // 
       this.saveFileDialog1.DefaultExt = "n";
       this.saveFileDialog1.Filter = "Nemerle files|*.n|All files|*.*";
-      // 
-      // settingsMenuItem
-      // 
-      this.settingsMenuItem.Name = "settingsMenuItem";
-      this.settingsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G) :> System.Windows.Forms.Keys);
-      this.settingsMenuItem.Size = System.Drawing.Size(158,  22);
-      this.settingsMenuItem.Text = "Settin&gs";
-      // 
-      // toolStripSeparator6
-      // 
-      this.toolStripSeparator6.Name = "toolStripSeparator6";
-      this.toolStripSeparator6.Size = System.Drawing.Size(155,  6);
+      this.saveFileDialog1.RestoreDirectory = true;
       // 
       // MainForm
       // 
@@ -450,7 +452,8 @@ namespace NPad
       this.Controls.Add(this.menuStrip1);
       this.MainMenuStrip = this.menuStrip1;
       this.Name = "MainForm";
-      this.Text = "MainForm";
+      this.ShowIcon = false;
+      this.Text = "Nemerle Pad";
       this.menuStrip1.ResumeLayout(false);
       this.menuStrip1.PerformLayout();
       this.toolStrip1.ResumeLayout(false);
