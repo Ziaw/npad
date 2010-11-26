@@ -50,6 +50,7 @@ namespace NPad
       this.pasteToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem();
       this.toolStripSeparator4 = System.Windows.Forms.ToolStripSeparator();
       this.selectAllToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem();
+      this.buildToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem();
       this.runToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem();
       this.helpToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem();
       this.aboutToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem();
@@ -62,7 +63,7 @@ namespace NPad
       this.copyToolStripButton = System.Windows.Forms.ToolStripButton();
       this.pasteToolStripButton = System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator5 = System.Windows.Forms.ToolStripSeparator();
-      this.helpToolStripButton = System.Windows.Forms.ToolStripButton();
+      this.runToolStripButton = System.Windows.Forms.ToolStripButton();
       this.statusStrip1 = System.Windows.Forms.StatusStrip();
       this.splitContainer1 = System.Windows.Forms.SplitContainer();
       this.fileBrowser = System.Windows.Forms.TreeView();
@@ -86,7 +87,7 @@ namespace NPad
       this.menuStrip1.Items.AddRange(array[
                   this.fileToolStripMenuItem, 
                   this.editToolStripMenuItem, 
-                  this.runToolStripMenuItem, 
+                  this.buildToolStripMenuItem, 
                   this.helpToolStripMenuItem]);
       this.menuStrip1.Location = System.Drawing.Point(0,  0);
       this.menuStrip1.Name = "menuStrip1";
@@ -243,11 +244,21 @@ namespace NPad
       this.selectAllToolStripMenuItem.Size = System.Drawing.Size(150,  22);
       this.selectAllToolStripMenuItem.Text = "Select &All";
       // 
+      // buildToolStripMenuItem
+      // 
+      this.buildToolStripMenuItem.DropDownItems.AddRange(array[
+                  this.runToolStripMenuItem]);
+      this.buildToolStripMenuItem.Name = "buildToolStripMenuItem";
+      this.buildToolStripMenuItem.Size = System.Drawing.Size(41,  20);
+      this.buildToolStripMenuItem.Text = "&Build";
+      // 
       // runToolStripMenuItem
       // 
+      this.runToolStripMenuItem.Image = (resources.GetObject("runToolStripMenuItem.Image") :> System.Drawing.Image);
+      this.runToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
       this.runToolStripMenuItem.Name = "runToolStripMenuItem";
       this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-      this.runToolStripMenuItem.Size = System.Drawing.Size(38,  20);
+      this.runToolStripMenuItem.Size = System.Drawing.Size(123,  22);
       this.runToolStripMenuItem.Text = "&Run";
       // 
       // helpToolStripMenuItem
@@ -275,7 +286,7 @@ namespace NPad
                   this.copyToolStripButton, 
                   this.pasteToolStripButton, 
                   this.toolStripSeparator5, 
-                  this.helpToolStripButton]);
+                  this.runToolStripButton]);
       this.toolStrip1.Location = System.Drawing.Point(0,  24);
       this.toolStrip1.Name = "toolStrip1";
       this.toolStrip1.Size = System.Drawing.Size(702,  25);
@@ -346,14 +357,15 @@ namespace NPad
       this.toolStripSeparator5.Name = "toolStripSeparator5";
       this.toolStripSeparator5.Size = System.Drawing.Size(6,  25);
       // 
-      // helpToolStripButton
+      // runToolStripButton
       // 
-      this.helpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.helpToolStripButton.Image = (resources.GetObject("helpToolStripButton.Image") :> System.Drawing.Image);
-      this.helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-      this.helpToolStripButton.Name = "helpToolStripButton";
-      this.helpToolStripButton.Size = System.Drawing.Size(23,  22);
-      this.helpToolStripButton.Text = "He&lp";
+      this.runToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.runToolStripButton.Image = (resources.GetObject("runToolStripButton.Image") :> System.Drawing.Image);
+      this.runToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
+      this.runToolStripButton.Name = "runToolStripButton";
+      this.runToolStripButton.Size = System.Drawing.Size(23,  22);
+      this.runToolStripButton.Text = "runStripButton";
+      this.runToolStripButton.ToolTipText = "Run";
       // 
       // statusStrip1
       // 
@@ -529,8 +541,6 @@ namespace NPad
   
     private mutable toolStripSeparator5 : System.Windows.Forms.ToolStripSeparator;
   
-    private mutable helpToolStripButton : System.Windows.Forms.ToolStripButton;
-  
     private mutable statusStrip1 : System.Windows.Forms.StatusStrip;
   
     private mutable splitContainer1 : System.Windows.Forms.SplitContainer;
@@ -543,8 +553,6 @@ namespace NPad
   
     private mutable fileBrowser : System.Windows.Forms.TreeView;
   
-    private mutable runToolStripMenuItem : System.Windows.Forms.ToolStripMenuItem;
-  
     private mutable openFileDialog1 : System.Windows.Forms.OpenFileDialog;
   
     private mutable saveFileDialog1 : System.Windows.Forms.SaveFileDialog;
@@ -552,5 +560,12 @@ namespace NPad
     private mutable toolStripSeparator6 : System.Windows.Forms.ToolStripSeparator;
   
     private mutable settingsMenuItem : System.Windows.Forms.ToolStripMenuItem;
+  
+    private mutable buildToolStripMenuItem : System.Windows.Forms.ToolStripMenuItem;
+  
+    private mutable runToolStripMenuItem : System.Windows.Forms.ToolStripMenuItem;
+  
+  
+    private mutable runToolStripButton : System.Windows.Forms.ToolStripButton;
   }
 }

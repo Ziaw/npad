@@ -25,6 +25,8 @@ namespace NPad
   /// </summary>
   public partial class MainForm : Form
   {
+    defaultExtension = ".n";
+    
     isDirty : bool 
     { 
       mutable _isDirty : bool;
@@ -81,7 +83,7 @@ namespace NPad
         trySaveBeforeAction(() => {args.Cancel = false;})
       }
 
-      subscribe(runToolStripMenuItem, runCode);
+      subscribe([runToolStripMenuItem, runToolStripButton], runCode);
 
       subscribe(undoToolStripMenuItem, constructEditorAction(Actions.Undo()));
       subscribe(redoToolStripMenuItem, constructEditorAction(Actions.Redo()));
@@ -96,7 +98,6 @@ namespace NPad
     
     initCompiler() : void 
     {
-      
       when (String.IsNullOrEmpty(Cfg.Instance.NemerlePath))
           _ = MessageBox.Show(
                 "Nemerle not found. Set Nemerle environment variable or install nemerle into Program Files\\Nemerle");
@@ -109,6 +110,23 @@ namespace NPad
         {
             isDirty = true;
         };
+        
+        match (Environment.GetCommandLineArgs().ToNList())
+        {
+          | [_, file] when File.Exists(file) => loadFile(Path.GetFullPath(file));
+          | [_, file] when file.IndexOfAny(Path.GetInvalidPathChars()) == -1 
+            => 
+              def file = if (String.IsNullOrEmpty(Path.GetExtension(file)))
+                $"$file$defaultExtension"
+              else
+                file;
+                
+              newFile();
+              currentFileName = Path.GetFullPath(file);
+              
+          | _ :: args => _ = MessageBox.Show($"Invalid args: ..$args\nUsage: npad filename");
+        }
+        
     }
 
     private initFileBrowser() : void
@@ -295,6 +313,7 @@ namespace NPad
         _ = dialog.ShowDialog();
       }
     }
+    #endregion
     
     runCode() : void
     {
@@ -356,10 +375,9 @@ namespace NPad
       {
         when (domain != null) AppDomain.Unload(domain);
         
-        // FIXME - remove second condition when compiler repaired
+        // FIXME - remove second condition when compiler repaired (fixed r9385, waiting for installer)
         when (isTemp && domain != null) File.Delete(fileName)
       }
     }
-    #endregion
   }
 }
