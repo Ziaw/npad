@@ -43,7 +43,7 @@
         <End>"</End>
       </Span>
 
-      <Span name = "String2" bold = "false" italic = "false" color = "Blue" stopateol = "true" escapecharacter="\">
+      <Span name = "QuotedSplicedString" rule="SplicedString" bold = "false" italic = "false" color = "Blue" stopateol = "true" escapecharacter="\">
         <Begin>$"</Begin>
         <End>"</End>
       </Span>
@@ -53,8 +53,13 @@
         <End>"</End>
       </Span>
 
-      <Span name = "MultiLineString2" bold = "false" italic = "false" color = "Blue" stopateol = "false" escapecharacter='"'>
+      <Span name = "MultiLineString2" bold = "false" italic = "false" color = "Blue" stopateol = "false">
         <Begin>&lt;#</Begin>
+        <End>#&gt;</End>
+      </Span>
+
+      <Span name = "SplicedMultiLineString" rule="SplicedString" bold = "false" italic = "false" color = "Blue" stopateol = "false" escapecharacter="\">
+        <Begin>$&lt;#</Begin>
         <End>#&gt;</End>
       </Span>
 
@@ -62,10 +67,12 @@
 				<Begin>&apos;</Begin>
 				<End>&apos;</End>
 			</Span>
-			
-			<MarkPrevious bold = "true" italic = "false" color = "MidnightBlue">(</MarkPrevious>
-			
-			<KeyWords name = "Punctuation" bold = "false" italic = "false" color = "DarkGreen">
+
+      <MarkPrevious bold = "true" italic = "false" color = "MidnightBlue">(</MarkPrevious>
+      <MarkPrevious bold = "true" italic = "false" color = "MidnightBlue">{</MarkPrevious>
+      <MarkPrevious bold = "true" italic = "false" color = "MidnightBlue">[</MarkPrevious>
+
+      <KeyWords name = "Punctuation" bold = "false" italic = "false" color = "DarkGreen">
 				<Key word = "?" />
 				<Key word = "," />
 				<Key word = "." />
@@ -149,7 +156,7 @@
 				<Key word = "join" />
 				<Key word = "on" />
 				<Key word = "equals" />
-				<Key word = "var" />
+				<Key word = "def" />
 			</KeyWords>
 			
 			<KeyWords name = "ExceptionHandlingStatements" bold="true" italic="false" color="Teal">
@@ -189,6 +196,7 @@
 			
 			<KeyWords name = "ReferenceTypes" bold="false" italic="false" color="Red">
         <Key word = "class" />
+        <Key word = "macro" />
         <Key word = "variant" />
         <Key word = "module" />
         <Key word = "interface" />
@@ -285,8 +293,23 @@
 				<Key word = "UNDONE" />
 			</KeyWords>
 		</RuleSet>
-		
-		<RuleSet name = "PreprocessorSet" ignorecase="false">
+
+    <RuleSet name = "SplicedString" ignorecase="false">
+      <Delimiters>&amp;&lt;&gt;~!%^*()-+=|\#/{}[]:;"' ,	.?</Delimiters>
+
+      <Span name="SplicedExpression" stopateol="false" bold="true" color="Blue">
+        <Begin>$(</Begin>
+        <End>)</End>
+      </Span>
+
+      <Span name="SplicedVar" stopateol="true" bold="true" color="Blue">
+        <Begin>$</Begin>
+        <End singleword="true">@C</End>
+      </Span>
+
+    </RuleSet>
+
+    <RuleSet name = "PreprocessorSet" ignorecase="false">
 			<Delimiters>&amp;&lt;&gt;~!%^*()-+=|\#/{}[]:;"' ,	.?</Delimiters>
 			
 			<KeyWords name = "PreprocessorDirectives" bold="true" italic="false" color="Green">

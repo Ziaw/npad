@@ -493,7 +493,13 @@ namespace ICSharpCode.TextEditor.Document
 						} else {
 							words.Add(TextWord.Space);
 						}
-						++currentOffset;
+
+                        if (activeSpan != null && activeSpan.End != null && activeSpan.IsEndSingleWord)
+                        {
+                            currentSpanStack.Pop();
+                            UpdateSpanStateVariables();
+                        }
+				        ++currentOffset;
 						break;
 					case '\t':
 						PushCurWord(document, ref markNext, words);

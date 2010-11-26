@@ -311,6 +311,9 @@ namespace NPad
                      AppDomain.CreateDomain(assemblyFullName)
                    else
                      null;
+                     
+      outputTextBox.Text = "";
+      outputTextBox.Update();
       
       try
       {
