@@ -26,14 +26,24 @@ namespace NPad
     {
       InitializeComponent();
       def cfg = Cfg.Instance;
+
+      if (cfg.UseSelfHosted)
+      {
+          selfHostedRadio.Checked = true
+      }
+      else if (cfg.AutoDetectNemerlePath)
+      {
+          autoDetectRadio.Checked = true
+      }
+      else
+      {
+          useCustomPathRadio.Checked = true;
+      }
       
-      autoDetectRadio.Checked = cfg.AutoDetectNemerlePath;
-      useCustomPathRadio.Checked = !cfg.AutoDetectNemerlePath;
-      
-      def customPath = cfg.CustomNemerlePath.Trim();
       
       nemerlePathBox.TextChanged += (_, _) => useCustomPathRadio.Checked = true;
       
+      def customPath = cfg.CustomNemerlePath.Trim();
       when (!String.IsNullOrEmpty(customPath))
         nemerlePathBox.Text = customPath;
         
@@ -44,6 +54,7 @@ namespace NPad
         {
           | OK => 
             cfg.AutoDetectNemerlePath = autoDetectRadio.Checked;
+            cfg.UseSelfHosted = selfHostedRadio.Checked;
             cfg.CustomNemerlePath = nemerlePathBox.Text;
             cfg.UseSeparateDomain = useSeparateDomainCheck.Checked;
             cfg.Save();
