@@ -281,29 +281,29 @@ namespace NPad
     
     doEditorAction(action : Actions.IEditAction) : void
     {
-      def editor = codeEditor;
-			def area = editor.ActiveTextAreaControl.TextArea;
-			editor.BeginUpdate();
+        def editor = codeEditor;
+        def area = editor.ActiveTextAreaControl.TextArea;
+        editor.BeginUpdate();
 			
-			try 
-			{
-				lock (editor.Document) 
-				{
-					action.Execute(area);
-					when (area.SelectionManager.HasSomethingSelected && area.AutoClearSelection /*&& caretchanged*/) 
-					{
-						when (area.Document.TextEditorProperties.DocumentSelectionMode == DocumentSelectionMode.Normal) 
-						{
-							area.SelectionManager.ClearSelection();
-						}
-					}
-				}
-			} 
-			finally 
-			{
-			  editor.EndUpdate();
-				area.Caret.UpdateCaretPosition();
-			}
+        try 
+        {
+	        lock (editor.Document) 
+	        {
+		        action.Execute(area);
+		        when (area.SelectionManager.HasSomethingSelected && area.AutoClearSelection /*&& caretchanged*/) 
+		        {
+			        when (area.Document.TextEditorProperties.DocumentSelectionMode == DocumentSelectionMode.Normal) 
+			        {
+				        area.SelectionManager.ClearSelection();
+			        }
+		        }
+	        }
+        } 
+        finally 
+        {
+	        editor.EndUpdate();
+	        area.Caret.UpdateCaretPosition();
+        }
     }
     
     showSettingsDialog() : void
@@ -317,12 +317,7 @@ namespace NPad
     
     runCode() : void
     {
-      def (fileName, isTemp) = match (currentFileName)
-      {
-        | null => 
-          (Path.GetTempFileName(), true);
-        | some => (some, false)
-      }
+      def fileName = Path.GetTempFileName();
       
       def assemblyFullName = Assembly.GetExecutingAssembly().FullName;
       
@@ -338,9 +333,6 @@ namespace NPad
       {
         codeEditor.SaveFile(fileName);
         
-        unless (isTemp)
-          isDirty = false;
-        
         def runner = match (domain)
         { 
           | null => AppRunner()
@@ -352,10 +344,10 @@ namespace NPad
 
         def result = runner.CompileAndRun(FileInfo(fileName));
         
-        def logFileName = if (isTemp)
-            "snippet.n"
+        def logFileName = if (String.IsNullOrEmpty(currentFileName))
+            "snippet.n";
           else
-            Path.GetFileName(fileName);
+            Path.GetFileName(currentFileName);
         
         def escapedName = Regex.Escape(fileName);
 
@@ -374,9 +366,7 @@ namespace NPad
       finally
       {
         when (domain != null) AppDomain.Unload(domain);
-        
-        // FIXME - remove second condition when compiler repaired (fixed r9385, waiting for installer)
-        when (isTemp && domain != null) File.Delete(fileName)
+        File.Delete(fileName)
       }
     }
   }

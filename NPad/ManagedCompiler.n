@@ -44,16 +44,11 @@ namespace NPad
         {
           | _ is Recovery => null
         }
-        finally
-        {
-            // how to close compiled file?
-        }
       }
       
       public SetNemerlePath(path : string) : void
       {
       	nemerlePath = path;
       }
-      
   }
 }
