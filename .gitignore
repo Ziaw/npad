@@ -1,0 +1,22 @@
+# ReSharper meta directory
+_ReSharper*
+
+# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+bin
+obj
+logs
+
+# Visual studio user specific files
+*.user
+*.suo
+*.sln.cache
+*.psess
+*.resharper
+*.log
+
+# mstest test results
+TestResults
+
+#msoffice temp files
+~*
+
