@@ -14,3 +14,9 @@ Compile
 =======
 
 Install Nemerle (https://github.com/rsdn/nemerle) and run msbuild.exe in the root project folder.
+
+Contribute snippets
+===================
+
+Feel free to send me some Nemerle code snippets to include in npad distribution.
+Snippets folder: https://github.com/Ziaw/npad/tree/master/NPad/Samples
