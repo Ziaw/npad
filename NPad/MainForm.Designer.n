@@ -464,9 +464,9 @@ namespace NPad
         this.Controls.Add(this.statusStrip1);
         this.Controls.Add(this.toolStrip1);
         this.Controls.Add(this.menuStrip1);
+        this.Icon = (resources.GetObject("$this.Icon") :> System.Drawing.Icon);
         this.MainMenuStrip = this.menuStrip1;
         this.Name = "MainForm";
-        this.ShowIcon = false;
         this.Text = "Nemerle Pad";
         this.menuStrip1.ResumeLayout(false);
         this.menuStrip1.PerformLayout();
