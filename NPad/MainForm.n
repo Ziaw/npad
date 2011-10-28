@@ -330,8 +330,20 @@ namespace NPad
       outputTextBox.Text = "";
       outputTextBox.Update();
       
+      def showHourglass()
+      {
+        Cursor.Current = Cursors.WaitCursor;
+        UseWaitCursor = true;
+      }
+      
+      def hideHourglass()
+      {
+        UseWaitCursor = false;
+      }
+      
       try
       {
+        showHourglass();
         codeEditor.SaveFile(fileName);
         
         def runner = match (domain)
@@ -367,7 +379,8 @@ namespace NPad
       finally
       {
         when (domain != null) AppDomain.Unload(domain);
-        File.Delete(fileName)
+        File.Delete(fileName);
+        hideHourglass();
       }
     }
   }
