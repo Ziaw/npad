@@ -30,6 +30,7 @@ namespace NPad
     private InitializeComponent() : void
     {
         this.groupBox1 = System.Windows.Forms.GroupBox();
+        this.selfHostedRadio = System.Windows.Forms.RadioButton();
         this.buttonBrowse = System.Windows.Forms.Button();
         this.nemerlePathBox = System.Windows.Forms.TextBox();
         this.useCustomPathRadio = System.Windows.Forms.RadioButton();
@@ -38,7 +39,6 @@ namespace NPad
         this.buttonCancel = System.Windows.Forms.Button();
         this.buttonOk = System.Windows.Forms.Button();
         this.openDialog = System.Windows.Forms.OpenFileDialog();
-        this.selfHostedRadio = System.Windows.Forms.RadioButton();
         this.groupBox1.SuspendLayout();
         this.SuspendLayout();
         // 
@@ -51,84 +51,10 @@ namespace NPad
         this.groupBox1.Controls.Add(this.autoDetectRadio);
         this.groupBox1.Location = System.Drawing.Point(12,  12);
         this.groupBox1.Name = "groupBox1";
-        this.groupBox1.Size = System.Drawing.Size(525,  117);
-        this.groupBox1.TabIndex = 2;
+        this.groupBox1.Size = System.Drawing.Size(525,  101);
+        this.groupBox1.TabIndex = 0;
         this.groupBox1.TabStop = false;
-        this.groupBox1.Text = "Nemerle";
-        // 
-        // buttonBrowse
-        // 
-        this.buttonBrowse.Location = System.Drawing.Point(444,  64);
-        this.buttonBrowse.Name = "buttonBrowse";
-        this.buttonBrowse.Size = System.Drawing.Size(75,  23);
-        this.buttonBrowse.TabIndex = 3;
-        this.buttonBrowse.Text = "Browse...";
-        this.buttonBrowse.UseVisualStyleBackColor = true;
-        this.buttonBrowse.Click += System.EventHandler(this.buttonBrowse_Click);
-        // 
-        // nemerlePathBox
-        // 
-        this.nemerlePathBox.Location = System.Drawing.Point(70,  66);
-        this.nemerlePathBox.Name = "nemerlePathBox";
-        this.nemerlePathBox.Size = System.Drawing.Size(368,  20);
-        this.nemerlePathBox.TabIndex = 2;
-        // 
-        // useCustomPathRadio
-        // 
-        this.useCustomPathRadio.AutoSize = true;
-        this.useCustomPathRadio.Location = System.Drawing.Point(6,  66);
-        this.useCustomPathRadio.Name = "useCustomPathRadio";
-        this.useCustomPathRadio.Size = System.Drawing.Size(60,  17);
-        this.useCustomPathRadio.TabIndex = 1;
-        this.useCustomPathRadio.Text = "Custom";
-        this.useCustomPathRadio.UseVisualStyleBackColor = true;
-        // 
-        // autoDetectRadio
-        // 
-        this.autoDetectRadio.AutoSize = true;
-        this.autoDetectRadio.Location = System.Drawing.Point(6,  43);
-        this.autoDetectRadio.Name = "autoDetectRadio";
-        this.autoDetectRadio.Size = System.Drawing.Size(101,  17);
-        this.autoDetectRadio.TabIndex = 0;
-        this.autoDetectRadio.Text = "Autodetect path";
-        this.autoDetectRadio.UseVisualStyleBackColor = true;
-        // 
-        // useSeparateDomainCheck
-        // 
-        this.useSeparateDomainCheck.AutoSize = true;
-        this.useSeparateDomainCheck.Location = System.Drawing.Point(16,  136);
-        this.useSeparateDomainCheck.Name = "useSeparateDomainCheck";
-        this.useSeparateDomainCheck.Size = System.Drawing.Size(329,  17);
-        this.useSeparateDomainCheck.TabIndex = 3;
-        this.useSeparateDomainCheck.Text = "Use separate doman for compile and run samples (safe but slow)";
-        this.useSeparateDomainCheck.UseVisualStyleBackColor = true;
-        // 
-        // buttonCancel
-        // 
-        this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-        this.buttonCancel.Location = System.Drawing.Point(464,  159);
-        this.buttonCancel.Name = "buttonCancel";
-        this.buttonCancel.Size = System.Drawing.Size(75,  23);
-        this.buttonCancel.TabIndex = 4;
-        this.buttonCancel.Text = "Cancel";
-        this.buttonCancel.UseVisualStyleBackColor = true;
-        // 
-        // buttonOk
-        // 
-        this.buttonOk.Location = System.Drawing.Point(383,  159);
-        this.buttonOk.Name = "buttonOk";
-        this.buttonOk.Size = System.Drawing.Size(75,  23);
-        this.buttonOk.TabIndex = 5;
-        this.buttonOk.Text = "Ok";
-        this.buttonOk.UseVisualStyleBackColor = true;
-        this.buttonOk.Click += System.EventHandler(this.buttonOk_Click);
-        // 
-        // openDialog
-        // 
-        this.openDialog.FileName = "ncc.exe";
-        this.openDialog.Filter = "Nemerle compiler|ncc.exe";
-        this.openDialog.RestoreDirectory = true;
-        this.openDialog.Title = "Select nemerle installation directory";
+        this.groupBox1.Text = "&Nemerle compiler to use";
         // 
         // selfHostedRadio
         // 
@@ -137,10 +63,84 @@ namespace NPad
         this.selfHostedRadio.Location = System.Drawing.Point(6,  20);
         this.selfHostedRadio.Name = "selfHostedRadio";
         this.selfHostedRadio.Size = System.Drawing.Size(78,  17);
-        this.selfHostedRadio.TabIndex = 4;
+        this.selfHostedRadio.TabIndex = 0;
         this.selfHostedRadio.TabStop = true;
-        this.selfHostedRadio.Text = "Self hosted";
+        this.selfHostedRadio.Text = "&Self hosted";
         this.selfHostedRadio.UseVisualStyleBackColor = true;
+        // 
+        // buttonBrowse
+        // 
+        this.buttonBrowse.Location = System.Drawing.Point(444,  64);
+        this.buttonBrowse.Name = "buttonBrowse";
+        this.buttonBrowse.Size = System.Drawing.Size(75,  23);
+        this.buttonBrowse.TabIndex = 4;
+        this.buttonBrowse.Text = "&Browse...";
+        this.buttonBrowse.UseVisualStyleBackColor = true;
+        this.buttonBrowse.Click += System.EventHandler(this.buttonBrowse_Click);
+        // 
+        // nemerlePathBox
+        // 
+        this.nemerlePathBox.Location = System.Drawing.Point(72,  66);
+        this.nemerlePathBox.Name = "nemerlePathBox";
+        this.nemerlePathBox.Size = System.Drawing.Size(366,  21);
+        this.nemerlePathBox.TabIndex = 3;
+        // 
+        // useCustomPathRadio
+        // 
+        this.useCustomPathRadio.AutoSize = true;
+        this.useCustomPathRadio.Location = System.Drawing.Point(6,  66);
+        this.useCustomPathRadio.Name = "useCustomPathRadio";
+        this.useCustomPathRadio.Size = System.Drawing.Size(60,  17);
+        this.useCustomPathRadio.TabIndex = 2;
+        this.useCustomPathRadio.Text = "&Custom";
+        this.useCustomPathRadio.UseVisualStyleBackColor = true;
+        // 
+        // autoDetectRadio
+        // 
+        this.autoDetectRadio.AutoSize = true;
+        this.autoDetectRadio.Location = System.Drawing.Point(6,  43);
+        this.autoDetectRadio.Name = "autoDetectRadio";
+        this.autoDetectRadio.Size = System.Drawing.Size(101,  17);
+        this.autoDetectRadio.TabIndex = 1;
+        this.autoDetectRadio.Text = "&Autodetect path";
+        this.autoDetectRadio.UseVisualStyleBackColor = true;
+        // 
+        // useSeparateDomainCheck
+        // 
+        this.useSeparateDomainCheck.AutoSize = true;
+        this.useSeparateDomainCheck.Location = System.Drawing.Point(16,  136);
+        this.useSeparateDomainCheck.Name = "useSeparateDomainCheck";
+        this.useSeparateDomainCheck.Size = System.Drawing.Size(371,  17);
+        this.useSeparateDomainCheck.TabIndex = 1;
+        this.useSeparateDomainCheck.Text = "Use separate app&domains to compile and run samples (safer but slower)";
+        this.useSeparateDomainCheck.UseVisualStyleBackColor = true;
+        // 
+        // buttonCancel
+        // 
+        this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+        this.buttonCancel.Location = System.Drawing.Point(464,  159);
+        this.buttonCancel.Name = "buttonCancel";
+        this.buttonCancel.Size = System.Drawing.Size(75,  23);
+        this.buttonCancel.TabIndex = 3;
+        this.buttonCancel.Text = "&Cancel";
+        this.buttonCancel.UseVisualStyleBackColor = true;
+        // 
+        // buttonOk
+        // 
+        this.buttonOk.Location = System.Drawing.Point(383,  159);
+        this.buttonOk.Name = "buttonOk";
+        this.buttonOk.Size = System.Drawing.Size(75,  23);
+        this.buttonOk.TabIndex = 2;
+        this.buttonOk.Text = "&OK";
+        this.buttonOk.UseVisualStyleBackColor = true;
+        this.buttonOk.Click += System.EventHandler(this.buttonOk_Click);
+        // 
+        // openDialog
+        // 
+        this.openDialog.FileName = "ncc.exe";
+        this.openDialog.Filter = "Nemerle compiler|ncc.exe|Executable|*.exe";
+        this.openDialog.RestoreDirectory = true;
+        this.openDialog.Title = "Select Nemerle installation directory";
         // 
         // SettingsForm
         // 
@@ -153,10 +153,14 @@ namespace NPad
         this.Controls.Add(this.buttonCancel);
         this.Controls.Add(this.useSeparateDomainCheck);
         this.Controls.Add(this.groupBox1);
+        this.Font = System.Drawing.Font("Tahoma",  8.25f,  System.Drawing.FontStyle.Regular,  System.Drawing.GraphicsUnit.Point,  (204 :> byte));
+        this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+        this.MaximizeBox = false;
+        this.MinimizeBox = false;
         this.Name = "SettingsForm";
         this.ShowIcon = false;
         this.ShowInTaskbar = false;
-        this.Text = "NPad settings";
+        this.Text = "NPad Settings";
         this.groupBox1.ResumeLayout(false);
         this.groupBox1.PerformLayout();
         this.ResumeLayout(false);

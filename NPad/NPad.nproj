@@ -5,6 +5,8 @@
     <Nemerle Condition=" '$(Nemerle)' == '' ">$(ProgramFiles)\Nemerle\Net-4.0</Nemerle>
     <Name>NPad</Name>
     <TargetPlatform>v2</TargetPlatform>
+    <StartupObject />
+    <ApplicationIcon>Resources\NPad.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -44,16 +46,22 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
+    <Reference Include="Nemerle">
+      <Name>Nemerle</Name>
+      <AssemblyName>Nemerle.dll</AssemblyName>
+      <HintPath>$(Nemerle)\Nemerle.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="Nemerle.Compiler">
       <Name>Nemerle.Compiler</Name>
+      <AssemblyName>Nemerle.Compiler.dll</AssemblyName>
       <HintPath>$(Nemerle)\Nemerle.Compiler.dll</HintPath>
-      <Private>True</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Nemerle.Macros">
       <Name>Nemerle.Macros</Name>
+      <AssemblyName>Nemerle.Macros.dll</AssemblyName>
       <HintPath>$(Nemerle)\Nemerle.Macros.dll</HintPath>
-      <Private>True</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
@@ -82,17 +90,13 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Nemerle">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(Nemerle)\Nemerle.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.n" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration" />
+    <Folder Include="Resources\" />
     <Folder Include="Properties\" />
     <Folder Include="Samples\" />
   </ItemGroup>
@@ -125,6 +129,9 @@
     <None Include="app.config">
       <SubType>Content</SubType>
     </None>
+    <Content Include="Resources\NPad.ico">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Samples\HelloWorld.n">
       <SubType>Code</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -147,6 +154,7 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.n</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx" />
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.n</DependentUpon>
     </EmbeddedResource>
