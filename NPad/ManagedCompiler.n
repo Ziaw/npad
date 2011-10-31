@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace NPad
 {
@@ -22,28 +23,38 @@ namespace NPad
       {
         def options = CompilationOptions();
         def manager = ManagerClass(options);
-        
+
+        unless (String.IsNullOrEmpty(nemerlePath))
+          options.LibraryPaths ::= nemerlePath;
+          
         manager.InitOutput(System.IO.TextWriter.Null);
         manager.MessageOccured += (_, msg) => log.WriteLine(msg);
         
-        try
+        options.IgnoreConfusion = true;
+        options.ProgressBar = false;
+        options.Sources = [fileName.FullName];
+        options.CompileToMemory = true;
+        options.ColorMessages = false;
+            
+        def compile(_)
         {
-          when (!String.IsNullOrEmpty(nemerlePath))
-            options.LibraryPaths ::= nemerlePath;
-          
-          options.IgnoreConfusion = true;
-          options.ProgressBar = false;
-          options.Sources = [fileName.FullName];
-          options.CompileToMemory = true;
-          options.ColorMessages = false;
-          
-          manager.Run();
-          manager.GeneratedAssembly
+          try
+          {
+            manager.Run();
+          }
+          catch
+          {
+            | _ is Recovery => ()
+          }
         }
-        catch
-        {
-          | _ is Recovery => null
-        }
+
+        // compiler crashes on default stack size
+        def largeStackThread = Thread(compile, 5*IntPtr.Size*1024*1024);
+            
+        largeStackThread.Start();
+        largeStackThread.Join();
+            
+        manager.GeneratedAssembly
       }
       
       public SetNemerlePath(path : string) : void
