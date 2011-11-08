@@ -38,6 +38,7 @@ namespace NPad
         match (compiler.Compile(file, output))
         {
           | null =>
+              RunState = RunState.CompilationFailed;
               output.ToString();
           | assembly =>
               def entryPoint = try

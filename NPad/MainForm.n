@@ -1,6 +1,7 @@
 ﻿using Nemerle.Collections;
 using Nemerle.Text;
 using Nemerle.Utility;
+using Nemerle.Extensions;
 
 using System;
 using System.Collections.Generic;
@@ -339,6 +340,10 @@ namespace NPad
                    else
                      null;
                      
+      codeEditor.Document.RequestUpdate(TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
+      codeEditor.Document.MarkerStrategy.RemoveAll(_ => true);
+      codeEditor.Document.CommitUpdate();
+      
       outputTextBox.Text = "";
       outputTextBox.Update();
       
@@ -367,18 +372,40 @@ namespace NPad
         
         runner.Setup(Cfg.Instance.NemerlePath, Cfg.Instance.CompilerType);
 
-        def result = runner.CompileAndRun(FileInfo(fileName));
-        
-        def logFileName = if (String.IsNullOrEmpty(currentFileName))
-            "snippet.n";
-          else
-            Path.GetFileName(currentFileName);
-        
-        def escapedName = Regex.Escape(fileName);
+        mutable result = runner.CompileAndRun(FileInfo(fileName));
 
-        def result = Regex
-          .Replace(result, $"^$(escapedName)", logFileName, RegexOptions.Multiline);
-          
+        when (runner.RunState == RunState.CompilationFailed) 
+        {
+            def logFileName = if (String.IsNullOrEmpty(currentFileName))
+                "snippet.n";
+              else
+                Path.GetFileName(currentFileName);
+        
+            def escapedName = Regex.Escape(fileName);
+            
+            def highlightAndReplace(m : Match)
+            {
+                def num(x) {Int32.Parse(m.Groups[x].Value) - 1};
+                def startLine = num(1);
+                def startPos = num(2);
+                def endLine = num(3);
+                def endPos = num(4);
+                
+                def start = codeEditor.Document.PositionToOffset(TextLocation(startPos, startLine));
+                def end = codeEditor.Document.PositionToOffset(TextLocation(endPos, endLine));
+                
+                codeEditor.Document.MarkerStrategy.AddMarker(TextMarker(start, end - start, TextMarkerType.WaveLine, Color.Red));
+                
+                $"$logFileName:$startLine:$startPos:$endLine:$endPos"
+            }
+
+            codeEditor.Document.RequestUpdate(TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
+            
+            result = Regex
+              .Replace(result, $"^$escapedName:(\\d+):(\\d+):(\\d+):(\\d+)", highlightAndReplace, RegexOptions.Multiline);
+            codeEditor.Document.CommitUpdate();
+        }
+        
         outputTextBox.Text = result;
         outputTextBox.SelectionStart = outputTextBox.Text.Length;
         _ = outputTextBox.ScrollToCaret;
