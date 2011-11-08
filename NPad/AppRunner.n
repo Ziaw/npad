@@ -40,15 +40,25 @@ namespace NPad
           | null =>
               output.ToString();
           | assembly =>
-              def entryPoint = assembly.GetTypes()
-                .Select(t => t.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
-                .FirstOrDefault(_ != null);
+              def entryPoint = try
+              { 
+                 assembly.GetTypes()
+                    .Select(t => t.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                    .FirstOrDefault(_ != null);
+              }
+              catch 
+              {
+                  | e => 
+                  output.Write(e.ToString());
+                  null;
+              }
                 
               match (entryPoint)
               {
                 | null =>
                     RunState = RunState.CompilationFailed;
-                    "static Main() : void is not found";
+                    output.WriteLine("Entry point (static Main() : void) is not found");
+                    output.ToString();
                 | entryPoint =>            
                     def oldPwd = Environment.CurrentDirectory;
                     try 
@@ -97,6 +107,9 @@ namespace NPad
         }
         catch
         {
+          | e is TargetInvocationException => 
+            RunState = RunState.RuntimeExceptionOccurs;
+            output.WriteLine(e.InnerException)
           | e => 
             RunState = RunState.RuntimeExceptionOccurs;
             output.WriteLine(e)

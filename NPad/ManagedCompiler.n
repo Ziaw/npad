@@ -23,12 +23,14 @@ namespace NPad
       {
         def options = CompilationOptions();
         def manager = ManagerClass(options);
+        mutable wasError = false;
 
         unless (String.IsNullOrEmpty(nemerlePath))
           options.LibraryPaths ::= nemerlePath;
           
         manager.InitOutput(System.IO.TextWriter.Null);
         manager.MessageOccured += (_, msg) => log.WriteLine(msg);
+        manager.ErrorOccured += (_, _) => wasError = true;
         
         options.IgnoreConfusion = true;
         options.ProgressBar = false;
@@ -53,8 +55,11 @@ namespace NPad
             
         largeStackThread.Start();
         largeStackThread.Join();
-            
-        manager.GeneratedAssembly
+        
+        if (wasError)
+            null
+        else
+            manager.GeneratedAssembly
       }
       
       public SetNemerlePath(path : string) : void
