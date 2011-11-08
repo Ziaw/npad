@@ -38,28 +38,29 @@ namespace NPad
         match (compiler.Compile(file, output))
         {
           | null =>
-            output.ToString();
+              output.ToString();
           | assembly =>
-            def entryPoint = assembly.GetTypes()
+              def entryPoint = assembly.GetTypes()
                 .Select(t => t.GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
-                .SingleOrDefault(m => m != null);
-
-            when (entryPoint == null)
-            {
-              RunState = RunState.CompilationFailed;
-              output.Write("static Main() : void not found");
-            }
-            
-            def oldPwd = Environment.CurrentDirectory;
-            try 
-            {  
-              Environment.CurrentDirectory = file.Directory.FullName;
-              runProgram(entryPoint);
-            }
-            finally
-            {
-              Environment.CurrentDirectory = oldPwd;
-            }
+                .FirstOrDefault(_ != null);
+                
+              match (entryPoint)
+              {
+                | null =>
+                    RunState = RunState.CompilationFailed;
+                    "static Main() : void is not found";
+                | entryPoint =>            
+                    def oldPwd = Environment.CurrentDirectory;
+                    try 
+                    {  
+                        Environment.CurrentDirectory = file.Directory.FullName;
+                        runProgram(entryPoint);
+                    }
+                    finally
+                    {
+                        Environment.CurrentDirectory = oldPwd;
+                    }
+              }
         }
       }
     }
