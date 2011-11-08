@@ -87,9 +87,21 @@ namespace NPad
 
       subscribe(undoToolStripMenuItem, constructEditorAction(Actions.Undo()));
       subscribe(redoToolStripMenuItem, constructEditorAction(Actions.Redo()));
-      subscribe([cutToolStripButton, cutToolStripMenuItem], constructEditorAction(Actions.Cut()));
-      subscribe([copyToolStripButton, copyToolStripMenuItem], constructEditorAction(Actions.Copy()));
-      subscribe([pasteToolStripButton, pasteToolStripMenuItem], constructEditorAction(Actions.Paste()));
+      
+      def copyPaste(codeAction, textBoxAction : TextBox -> void) 
+      {
+          () =>
+              if (codeEditor.ContainsFocus)
+                doEditorAction(codeAction);
+              else if (outputTextBox.ContainsFocus)
+                textBoxAction(outputTextBox)
+              else
+                ()
+      }
+      
+      subscribe([cutToolStripButton, cutToolStripMenuItem], copyPaste(Actions.Cut(), _.Cut()));
+      subscribe([copyToolStripButton, copyToolStripMenuItem], copyPaste(Actions.Copy(), _.Copy()));
+      subscribe([pasteToolStripButton, pasteToolStripMenuItem], copyPaste(Actions.Paste(), _.Paste()));
       
       subscribe(settingsMenuItem, showSettingsDialog);
      
@@ -100,7 +112,7 @@ namespace NPad
     {
       when (String.IsNullOrEmpty(Cfg.Instance.NemerlePath))
           _ = MessageBox.Show(
-                "Nemerle not found. Set Nemerle environment variable or install nemerle into Program Files\\Nemerle");
+                "Nemerle is not found. Set Nemerle environment variable or install nemerle into Program Files\\Nemerle");
     }
     
     private initEditor() : void
