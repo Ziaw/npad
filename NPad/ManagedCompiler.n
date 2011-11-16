@@ -27,8 +27,23 @@ namespace NPad
 
         unless (String.IsNullOrEmpty(nemerlePath))
           options.LibraryPaths ::= nemerlePath;
+
+        options.LibraryPaths ::= Environment.CurrentDirectory;
+        
+        foreach (line in File.ReadLines(fileName.FullName))
+        {
+          regexp match (line)
+          {
+            | @".*///?\s*references?\s*:?\s*(?<assembly>.+)\s*"
+            | @"\s*using (?<assembly>\S+);\s*///?\s*references?\s*" => 
+              options.ReferencedLibraries ::= assembly;
+            | _ => 
+              ();
+          }
+        }
+        
           
-        manager.InitOutput(System.IO.TextWriter.Null);
+        manager.InitOutput(TextWriter.Null);
         manager.MessageOccured += (_, msg) => log.WriteLine(msg);
         manager.ErrorOccured += (_, _) => wasError = true;
         
@@ -47,6 +62,8 @@ namespace NPad
           catch
           {
             | _ is Recovery => ()
+            | e => 
+              log.WriteLine(e);
           }
         }
 
