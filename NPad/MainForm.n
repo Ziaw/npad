@@ -103,6 +103,7 @@ namespace NPad
       subscribe([cutToolStripButton, cutToolStripMenuItem], copyPaste(Actions.Cut(), _.Cut()));
       subscribe([copyToolStripButton, copyToolStripMenuItem], copyPaste(Actions.Copy(), _.Copy()));
       subscribe([pasteToolStripButton, pasteToolStripMenuItem], copyPaste(Actions.Paste(), _.Paste()));
+      subscribe([selectAllToolStripMenuItem], copyPaste(Actions.SelectWholeDocument(), _.SelectAll()));
       
       subscribe(settingsMenuItem, showSettingsDialog);
      

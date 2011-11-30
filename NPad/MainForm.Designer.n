@@ -193,20 +193,20 @@ namespace NPad
         // 
         this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
         this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z) :> System.Windows.Forms.Keys);
-        this.undoToolStripMenuItem.Size = System.Drawing.Size(144,  22);
+        this.undoToolStripMenuItem.Size = System.Drawing.Size(164,  22);
         this.undoToolStripMenuItem.Text = "&Undo";
         // 
         // redoToolStripMenuItem
         // 
         this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
         this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y) :> System.Windows.Forms.Keys);
-        this.redoToolStripMenuItem.Size = System.Drawing.Size(144,  22);
+        this.redoToolStripMenuItem.Size = System.Drawing.Size(164,  22);
         this.redoToolStripMenuItem.Text = "&Redo";
         // 
         // toolStripSeparator3
         // 
         this.toolStripSeparator3.Name = "toolStripSeparator3";
-        this.toolStripSeparator3.Size = System.Drawing.Size(141,  6);
+        this.toolStripSeparator3.Size = System.Drawing.Size(161,  6);
         // 
         // cutToolStripMenuItem
         // 
@@ -214,7 +214,7 @@ namespace NPad
         this.cutToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
         this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
         this.cutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X) :> System.Windows.Forms.Keys);
-        this.cutToolStripMenuItem.Size = System.Drawing.Size(144,  22);
+        this.cutToolStripMenuItem.Size = System.Drawing.Size(164,  22);
         this.cutToolStripMenuItem.Text = "Cu&t";
         // 
         // copyToolStripMenuItem
@@ -223,7 +223,7 @@ namespace NPad
         this.copyToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
         this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
         this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C) :> System.Windows.Forms.Keys);
-        this.copyToolStripMenuItem.Size = System.Drawing.Size(144,  22);
+        this.copyToolStripMenuItem.Size = System.Drawing.Size(164,  22);
         this.copyToolStripMenuItem.Text = "&Copy";
         // 
         // pasteToolStripMenuItem
@@ -232,18 +232,19 @@ namespace NPad
         this.pasteToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
         this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
         this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V) :> System.Windows.Forms.Keys);
-        this.pasteToolStripMenuItem.Size = System.Drawing.Size(144,  22);
+        this.pasteToolStripMenuItem.Size = System.Drawing.Size(164,  22);
         this.pasteToolStripMenuItem.Text = "&Paste";
         // 
         // toolStripSeparator4
         // 
         this.toolStripSeparator4.Name = "toolStripSeparator4";
-        this.toolStripSeparator4.Size = System.Drawing.Size(141,  6);
+        this.toolStripSeparator4.Size = System.Drawing.Size(161,  6);
         // 
         // selectAllToolStripMenuItem
         // 
         this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-        this.selectAllToolStripMenuItem.Size = System.Drawing.Size(144,  22);
+        this.selectAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A) :> System.Windows.Forms.Keys);
+        this.selectAllToolStripMenuItem.Size = System.Drawing.Size(164,  22);
         this.selectAllToolStripMenuItem.Text = "Select &All";
         // 
         // buildToolStripMenuItem
