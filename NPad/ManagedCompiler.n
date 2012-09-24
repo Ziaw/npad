@@ -49,7 +49,7 @@ namespace NPad
         
         options.IgnoreConfusion = true;
         options.ProgressBar = false;
-        options.Sources = [fileName.FullName];
+        options.Sources = [FileSource(fileName.FullName, options.Warnings)];
         options.CompileToMemory = true;
         options.ColorMessages = false;
             
