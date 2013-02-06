@@ -1,0 +1,123 @@
+﻿using Nemerle;
+using Nemerle.Collections;
+using Nemerle.Text;
+using Nemerle.Utility;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Nemerle.Compiler;
+using Nemerle.Completion2;
+
+namespace NPad.Completion
+{
+  /// <summary>
+  /// Description of IdeProject.
+  /// </summary>
+  class IdeProject: IIdeProject
+  {
+    mainForm : MainForm;
+    sources : list[IIdeSource];
+    
+    public this(form: MainForm) 
+    {
+        mainForm = form;
+        sources = [IdeSource(mainForm.CodeEditor)]
+    }
+    
+     
+    public AddOverrideMembers(source : Nemerle.Completion2.IIdeSource, ty : Nemerle.Compiler.TypeBuilder, notOverriden : System.Collections.Generic.IEnumerable[Nemerle.Compiler.IMember]) : void
+    {
+        _ = source; _ = ty; _ = notOverriden;
+        throw System.NotImplementedException()
+    }
+    
+    public AddUnimplementedMembers(source : Nemerle.Completion2.IIdeSource, ty : Nemerle.Compiler.TypeBuilder, unimplementedMembers : System.Collections.Generic.IEnumerable[System.Linq.IGrouping[Nemerle.Compiler.FixedType.Class, Nemerle.Compiler.IMember]]) : void
+    {
+        _ = source; _ = ty; _ = unimplementedMembers;
+        throw System.NotImplementedException()
+    }
+    
+    public ClearAllCompilerMessages() : void { mainForm.ClearAllCompilerMessages(); }
+    
+    public ClearMethodCompilerMessages(_member : Nemerle.Compiler.MemberBuilder) : void
+    {
+        ClearAllCompilerMessages();
+    }
+    
+    public GetAssemblyReferences() : System.Collections.Generic.IEnumerable[string]{ [@"C:\Program Files\Nemerle\net-4.0\Nemerle.dll" ] /* TODO: implement */  }
+    
+    public GetMacroAssemblyReferences() : System.Collections.Generic.IEnumerable[string]{ [@"C:\Program Files\Nemerle\net-4.0\Nemerle.Macros.dll" ] /* TODO: implement */  }
+    
+    public GetOptions() : Nemerle.Compiler.CompilationOptions
+    { 
+        def options = CompilationOptions(); 
+        options.DoNotLoadStdlib = true;
+        options.DoNotLoadMacros = true;
+        options
+    }
+    
+    public GetSource(fileIndex : int) : Nemerle.Completion2.IIdeSource
+    {
+        assert2(fileIndex == 0);
+        
+        match (sources)
+        {
+            | [x] => x
+            | _ => throw InvalidOperationException();
+        }
+    }
+    
+    public GetSources() : System.Collections.Generic.IEnumerable[Nemerle.Completion2.IIdeSource]{ sources }
+    
+    public IsLoaded : bool
+    {
+        get{ true }
+    }
+    
+    public LookupLocationsFromDebugInformation(info : Nemerle.Completion2.GotoInfo) : array[Nemerle.Completion2.GotoInfo]
+    {
+        _ = info;
+        throw System.NotImplementedException()
+    }
+    
+    public SetCompilerMessageForCompileUnit(compileUnit : Nemerle.Completion2.CompileUnit) : void
+    {
+        _ = compileUnit;
+        throw System.NotImplementedException()
+    }
+    
+    public SetHighlights(source : Nemerle.Completion2.IIdeSource, highlights : System.Collections.Generic.IEnumerable[Nemerle.Completion2.GotoInfo]) : void
+    {
+        _ = source; _ = highlights;
+        throw System.NotImplementedException()
+    }
+    
+    public SetMethodCompilerMessages(member : Nemerle.Compiler.MemberBuilder, messages : System.Collections.Generic.IEnumerable[Nemerle.Compiler.CompilerMessage]) : void
+    {
+        _ = member; _ = messages;
+        throw System.NotImplementedException()
+    }
+    
+    public SetStatusText(text : string) : void
+    {
+        _ = text;
+        throw System.NotImplementedException()
+    }
+    
+    public SetTopLevelCompilerMessages(messages : System.Collections.Generic.IEnumerable[Nemerle.Compiler.CompilerMessage]) : void
+    {
+        _ = messages;
+        throw System.NotImplementedException()
+    }
+    
+    public ShowMessage(message : string, messageType : Nemerle.Completion2.MessageType) : void
+    {
+        _ = message; _ = messageType;
+        throw System.NotImplementedException()
+    }
+    
+    public TypesTreeCreated() : void{ throw System.NotImplementedException() }
+    
+  }
+}

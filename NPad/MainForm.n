@@ -18,6 +18,8 @@ using ICSharpCode.TextEditor.Document;
 using ICSharpCode.TextEditor;
 using System.Reflection;
 using NPad.Configuration;
+using NPad.Completion;
+using Nemerle.Completion2;
 
 namespace NPad
 {
@@ -27,6 +29,9 @@ namespace NPad
   public partial class MainForm : Form
   {
     defaultExtension = ".n";
+    mutable engine : IIdeEngine;
+    mutable project : IdeProject;
+    completionOutput : TextWriter = StringWriter();
     
     isDirty : bool 
     { 
@@ -112,6 +117,8 @@ namespace NPad
     
     initCompiler() : void 
     {
+      project = IdeProject(this);
+      engine = EngineFactory.Create(project, completionOutput, true);
       when (String.IsNullOrEmpty(Cfg.Instance.NemerlePath))
           _ = MessageBox.Show(
                 "Nemerle is not found. Set Nemerle environment variable or install nemerle into Program Files\\Nemerle");
@@ -123,6 +130,7 @@ namespace NPad
         codeEditor.Document.DocumentChanged += (_, _) =>
         {
             isDirty = true;
+            _ = engine.BeginReloadProject();
         };
         
         match (Environment.GetCommandLineArgs().ToNList())
@@ -330,6 +338,18 @@ namespace NPad
     }
     #endregion
     
+    public ClearAllCompilerMessages() : void 
+    {
+      codeEditor.Document.RequestUpdate(TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
+      codeEditor.Document.MarkerStrategy.RemoveAll(_ => true);
+      codeEditor.Document.CommitUpdate();
+    }
+    
+    public CodeEditor : TextEditorControl 
+    {
+        get { codeEditor }
+    }
+    
     runCode() : void
     {
       def fileName = Path.GetTempFileName();
@@ -340,10 +360,8 @@ namespace NPad
                      AppDomain.CreateDomain(assemblyFullName)
                    else
                      null;
-                     
-      codeEditor.Document.RequestUpdate(TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
-      codeEditor.Document.MarkerStrategy.RemoveAll(_ => true);
-      codeEditor.Document.CommitUpdate();
+      
+      ClearAllCompilerMessages();
       
       outputTextBox.Text = "";
       outputTextBox.Update();

@@ -1,0 +1,122 @@
+﻿using Nemerle;
+using Nemerle.Collections;
+using Nemerle.Text;
+using Nemerle.Utility;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Nemerle.Compiler;
+using Nemerle.Completion2;
+using ICSharpCode.TextEditor.Document;
+using ICSharpCode.TextEditor;
+
+namespace NPad.Completion
+{
+  /// <summary>
+  /// Description of IdeSource.
+  /// </summary>
+  class IdeSource: IIdeSource
+  {
+    codeEditor : TextEditorControl;
+    
+    public this(codeEditor : TextEditorControl, fileIndex = 0)
+    {
+        this.codeEditor = codeEditor;
+        
+        codeEditor.TextChanged += (_, _) =>
+            CurrentVersion ++;
+            
+        doc.LineCountChanged += (_, _) => 
+            LineCount = doc.TextContent.Count(c => c == '\n');
+        
+        FileIndex = fileIndex;
+    }
+    
+      
+    public CompileUnit : Nemerle.Completion2.CompileUnit
+    {
+        get; set;
+    }
+    
+    public CurrentVersion : int
+    {
+        get; set;
+    }
+    
+    doc : IDocument { get { codeEditor.Document } }
+    
+    public GetLine(line : int) : string
+    {
+        doc.GetText(doc.GetLineSegment(line))
+    }
+    
+    public GetLineIndexOfPosition(pos : int) : (int * int)
+    {
+        def segment = doc.GetLineSegmentForOffset(pos);
+        (segment.LineNumber, segment.Offset - pos)
+    }
+    
+    public GetPositionOfLineIndex(line : int, col : int) : int
+    {
+        def segment = doc.GetLineSegment(line);
+        
+        segment.Offset + col
+    }
+    
+    public GetRegion(location : Nemerle.Compiler.Location) : string
+    {
+        def start = location.Begin;
+        def end = location.End;
+        
+        GetRegion(start.Line, start.Column, end.Line, end.Column);
+    }
+    
+    public GetRegion(lineStart : int, colStart : int, lineEnd : int, colEnd : int) : string
+    {
+        def start = GetPositionOfLineIndex(lineStart, colStart);
+        def end = GetPositionOfLineIndex(lineEnd, colEnd);
+        
+        doc.GetText(start, end - start);
+    }
+    
+    public GetTextCurrentVersionAndFileIndex() : (string * int * int) { (doc.TextContent, CurrentVersion, FileIndex) }
+    
+    public LineCount : int
+    {
+        get; set;
+    }
+    
+    public LockReadWrite() : void { /* TODO : implement */ }
+    
+    public LockWrite() : void{ /* TODO : implement */ }
+    
+    public RelocationRequestsQueue : System.Collections.Generic.List[Nemerle.Completion2.RelocationRequest]
+    {
+        get{ List(); /* TODO : WTF? */}
+    }
+    
+    public SetRegions(regions : System.Collections.Generic.IList[Nemerle.Completion2.RegionInfo], sourceVersion : int) : void
+    {
+        _ = regions; _ = sourceVersion;
+        /* TODO : WTF? */
+    }
+    
+    public SetTopDeclarations(topDeclarations : array[Nemerle.Compiler.Parsetree.TopDeclaration]) : void
+    {
+        _ = topDeclarations;
+        /* TODO : WTF? */
+    }
+    
+    public UnlockWrite() : void{ /* TODO : implement */ }
+    
+    public UnlocReadkWrite() : void{ /* TODO : implement */ }
+    
+    public FileIndex : int
+    {
+        get; private set;
+    }
+    
+    public GetText() : string{ doc.TextContent; }
+  }
+}

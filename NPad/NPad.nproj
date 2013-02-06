@@ -60,6 +60,11 @@
       <HintPath>$(Nemerle)\Nemerle.Compiler.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="Nemerle.Compiler.Utils, Version=1.1.1055.0, Culture=neutral, PublicKeyToken=c4c0f22444bf4088">
+      <Name>Nemerle.Compiler.Utils</Name>
+      <AssemblyName>Nemerle.Compiler.Utils.dll</AssemblyName>
+      <HintPath>..\..\..\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Nemerle\Nemerle.Compiler.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="Nemerle.Macros">
       <Name>Nemerle.Macros</Name>
       <AssemblyName>Nemerle.Macros.dll</AssemblyName>
@@ -87,10 +92,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Completion\IdeProject.n">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Completion\IdeSource.n">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.n" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration" />
+    <Folder Include="Completion" />
     <Folder Include="Resources\" />
     <Folder Include="Properties\" />
     <Folder Include="Samples\" />
