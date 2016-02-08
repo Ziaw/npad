@@ -332,7 +332,8 @@ namespace NPad
     
     runCode() : void
     {
-      def fileName = Path.GetTempFileName();
+      // Path.GetTempFileName can't create file with .n extension
+      def fileName = Path.Combine(Path.GetTempPath(), $"$(System.Guid.NewGuid).n"); 
       
       def assemblyFullName = Assembly.GetExecutingAssembly().FullName;
       
